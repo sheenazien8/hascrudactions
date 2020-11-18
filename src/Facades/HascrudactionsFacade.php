@@ -1,6 +1,6 @@
 <?php
 
-namespace Sheenazien8\Hascrudactions;
+namespace Sheenazien8\Hascrudactions\Facades;
 
 use Illuminate\Support\Facades\Facade;
 

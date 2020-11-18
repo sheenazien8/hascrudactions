@@ -1,0 +1,11 @@
+<?php
+
+Namespace App\Repositories;
+
+use Sheenazien8\Hascrudactions\Abstracts\Repository as RepositoryAbstract;
+
+class {{repositoryName}} extends RepositoryAbstract
+{
+    protected string $model = '{{model}}';
+}
+

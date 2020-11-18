@@ -3,6 +3,7 @@
 namespace Sheenazien8\Hascrudactions;
 
 use Illuminate\Support\ServiceProvider;
+use Sheenazien8\Hascrudactions\Console\CreateRepositoryCommand;
 
 class HascrudactionsServiceProvider extends ServiceProvider
 {
@@ -15,7 +16,7 @@ class HascrudactionsServiceProvider extends ServiceProvider
          * Optional methods to load your package assets
          */
         // $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'hascrudactions');
-        // $this->loadViewsFrom(__DIR__.'/../resources/views', 'hascrudactions');
+        $this->loadViewsFrom(__DIR__.'/../resources/views', 'hascrudactions');
         // $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
         // $this->loadRoutesFrom(__DIR__.'/routes.php');
 
@@ -24,10 +25,11 @@ class HascrudactionsServiceProvider extends ServiceProvider
                 __DIR__.'/../config/config.php' => config_path('hascrudactions.php'),
             ], 'config');
 
+
             // Publishing the views.
-            /*$this->publishes([
+            $this->publishes([
                 __DIR__.'/../resources/views' => resource_path('views/vendor/hascrudactions'),
-            ], 'views');*/
+            ], 'views');
 
             // Publishing assets.
             /*$this->publishes([
@@ -40,7 +42,9 @@ class HascrudactionsServiceProvider extends ServiceProvider
             ], 'lang');*/
 
             // Registering package commands.
-            // $this->commands([]);
+            $this->commands([
+                CreateRepositoryCommand::class,
+            ]);
         }
     }
 
