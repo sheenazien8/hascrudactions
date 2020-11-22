@@ -6,9 +6,11 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
+use Sheenazien8\Hascrudactions\Traits\GetStubTrait;
 
 class CreateHascruActionCommand extends Command
 {
+    use GetStubTrait;
     /**
      * The name and signature of the console command.
      *
@@ -39,28 +41,23 @@ class CreateHascruActionCommand extends Command
      *
      * @return mixed
      */
-    public function handle()
+    public function handle(): void
     {
         $model = $this->argument('model');
         $viewPath = Str::lower($model);
+        $repositoryClass = "{$model}Repository";
         if(!File::exists(app_path("Http/Requests/{$model}"))) {
             // path does not exist
             File::makeDirectory(app_path("Http/Requests/{$model}"), 0777, true, true);
-            $this->createRequest($model);
+            $this->generateRequest($model);
         } else {
-            $this->createRequest($model);
+            $this->generateRequest($model);
         }
-        Artisan::call('make:repository', [
-            'name' => "{$model}Repository",
-            '--model' => $model
-        ]);
+        $this->generateRepository($repositoryClass, $model);
+        $this->createController($model, $viewPath, $repositoryClass);
     }
 
-    protected function getStub($type) {
-        return file_get_contents(__DIR__ . "/../../resources/stubs/$type.stub");
-    }
-
-    private function createRequest(string $model)
+    private function generateRequest(string $model): void
     {
         foreach (['Index', 'Store', 'Update', 'BulkDelete'] as $value) {
             $requestClasName = str_replace([
@@ -77,5 +74,35 @@ class CreateHascruActionCommand extends Command
         }
         $this->info("Request For the $model is created");
         $this->info("Add Your Rule In App/Http/Requests/{$model}");
+    }
+
+    private function generateRepository(string $repositoryClass, string $model): void
+    {
+        Artisan::call('hascrudaction:repository', [
+            'name' => $repositoryClass,
+            '--model' => $model
+        ]);
+        $this->info("Repository $model is created");
+    }
+
+    private function createController(string $model, string $viewPath, string $repositoryClass): void
+    {
+        $controllerName = "{$model}Controller";
+        $requestClasName = str_replace([
+                '{{model}}',
+                '{{controllerName}}',
+                '{{viewpath}}',
+                '{{repositoryClass}}',
+            ],
+            [
+                $model,
+                $controllerName,
+                $viewPath,
+                $repositoryClass,
+            ],
+            $this->getStub('HasCrudAction')
+        );
+        file_put_contents(app_path("Http/Controllers/{$controllerName}.php"), $requestClasName);
+        $this->info("Controller $controllerName is created");
     }
 }

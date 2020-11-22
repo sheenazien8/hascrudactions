@@ -4,16 +4,18 @@ namespace Sheenazien8\Hascrudactions\Console;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
+use Sheenazien8\Hascrudactions\Traits\GetStubTrait;
 use Str;
 
 class CreateRepositoryCommand extends Command
 {
+    use GetStubTrait;
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'make:repository
+    protected $signature = 'hascrudaction:repository
                             {name : Pass repository name}
                             {--model= : Pass value models (optioanl)}';
 
@@ -49,10 +51,6 @@ class CreateRepositoryCommand extends Command
             $model = config('hascrudactions.model_folder') ? config('hascrudactions.model_folder').$model : 'App\\'.$model;
         }
         $this->createRepositoryFile($name, $model);
-    }
-
-    protected function getStub($type) {
-        return file_get_contents(__DIR__ . "/../../resources/stubs/$type.stub");
     }
 
     private function createRepositoryFile(string $name, string $model)

@@ -1,0 +1,8 @@
+<div class="table-responsive">
+  {{ $dataTable->table() }}
+</div>
+
+@push(config('wrapper.javascript'))
+  {{ $dataTable->scripts() }}
+@endpush
+

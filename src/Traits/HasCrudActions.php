@@ -2,13 +2,11 @@
 
 namespace Sheenazien8\Hascrudactions\Traits;
 
-use App\Exceptions\ServiceActionsException;
-use App\Facades\Response;
-use App\Http\Requests\Master\Unit\Index;
-use App\Models\User;
-use Illuminate\Database\Eloquent\Model;
+use Sheenazien8\Hascrudactions\Exceptions\ServiceActionsException;
+use Sheenazien8\Hascrudactions\Facades\Response;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request; use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Illuminate\View\View;
 use Lakasir\UserLoggingActivity\Facades\Activity;
 use Maatwebsite\Excel\Facades\Excel;
@@ -151,9 +149,9 @@ trait HasCrudActions
         }
         $message = __('app.global.message.create').' '. ucfirst($this->permission);
 
-        if (method_exists($data, 'logs')) {
-            Activity::modelable($data)->auth()->creating();
-        }
+        /* if (method_exists($data, 'logs')) { */
+        /*     Activity::modelable($data)->auth()->creating(); */
+        /* } */
 
         if (isset($this->return) && $this->return == 'api') {
             return Response::success($data);
@@ -258,9 +256,9 @@ trait HasCrudActions
             return response()->json($data, 200);
         }
 
-        if (method_exists($data, 'logs')) {
-            Activity::modelable($data)->auth()->updating();
-        }
+        /* if (method_exists($data, 'logs')) { */
+        /*     Activity::modelable($data)->auth()->updating(); */
+        /* } */
 
         flash()->success(dash_to_space($message));
 
@@ -281,9 +279,9 @@ trait HasCrudActions
 
         $data = $this->repository->find($model);
 
-        if (method_exists($data, 'logs')) {
-            Activity::sync()->modelable($data)->auth()->deleting();
-        }
+        /* if (method_exists($data, 'logs')) { */
+        /*     Activity::sync()->modelable($data)->auth()->deleting(); */
+        /* } */
 
         $data->delete();
 

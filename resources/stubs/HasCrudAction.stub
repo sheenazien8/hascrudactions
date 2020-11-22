@@ -6,9 +6,10 @@ use App\Http\Requests\{{model}}\BulkDelete;
 use App\Http\Requests\{{model}}\Index;
 use App\Http\Requests\{{model}}\Store;
 use App\Http\Requests\{{model}}\Update;
+use App\Repositories\{{repositoryClass}};
 use Sheenazien8\Hascrudactions\Traits\HasCrudActions;
 
-class {{model}}Controller extends Controller
+class {{controllerName}} extends Controller
 {
     use HasCrudActions;
 
@@ -26,6 +27,6 @@ class {{model}}Controller extends Controller
 
     protected $redirect = '{{viewpath}}';
 
-    protected $repositoryClass = {{model}}::class;
+    protected $repositoryClass = {{repositoryClass}}::class;
 }
 

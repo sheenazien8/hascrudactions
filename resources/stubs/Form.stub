@@ -1,0 +1,7 @@
+<form action="{{ $route }}" method="POST">
+  @csrf
+  @if(isset($method))
+    @method($method)
+  @endif
+  // Add Your Input
+</form>

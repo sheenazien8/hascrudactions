@@ -1,0 +1,10 @@
+@extends(config('wrapper.layouts'))
+
+@section(config('wrapper.section'))
+  @include('{{folder_name}}.components.form', [
+    'data' => $data,
+    'method' => 'PUT',
+    'route' => route("{$resource}.update", $data)
+  ])
+@endsection
+

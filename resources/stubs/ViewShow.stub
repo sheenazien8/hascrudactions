@@ -1,0 +1,9 @@
+@extends(config('wrapper.layouts'))
+
+@section(config('wrapper.section'))
+  {{content}}
+@endsection
+
+@push(config('wrapper.javascript'))
+@endpush
+

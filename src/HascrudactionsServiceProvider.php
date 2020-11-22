@@ -5,6 +5,8 @@ namespace Sheenazien8\Hascrudactions;
 use Illuminate\Support\ServiceProvider;
 use Sheenazien8\Hascrudactions\Console\CreateHascruActionCommand;
 use Sheenazien8\Hascrudactions\Console\CreateRepositoryCommand;
+use Sheenazien8\Hascrudactions\Console\CreateViewCommand;
+use Sheenazien8\Hascrudactions\Console\InstallCommand;
 
 class HascrudactionsServiceProvider extends ServiceProvider
 {
@@ -46,6 +48,8 @@ class HascrudactionsServiceProvider extends ServiceProvider
             $this->commands([
                 CreateRepositoryCommand::class,
                 CreateHascruActionCommand::class,
+                InstallCommand::class,
+                CreateViewCommand::class,
             ]);
         }
     }
