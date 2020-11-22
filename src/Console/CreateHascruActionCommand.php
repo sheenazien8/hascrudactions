@@ -50,6 +50,10 @@ class CreateHascruActionCommand extends Command
         } else {
             $this->createRequest($model);
         }
+        Artisan::call('make:repository', [
+            'name' => "{$model}Repository",
+            '--model' => $model
+        ]);
     }
 
     protected function getStub($type) {

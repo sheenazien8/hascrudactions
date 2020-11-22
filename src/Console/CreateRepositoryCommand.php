@@ -48,6 +48,15 @@ class CreateRepositoryCommand extends Command
         } else {
             $model = config('hascrudactions.model_folder') ? config('hascrudactions.model_folder').$model : 'App\\'.$model;
         }
+        $this->createRepositoryFile($name, $model);
+    }
+
+    protected function getStub($type) {
+        return file_get_contents(__DIR__ . "/../../resources/stubs/$type.stub");
+    }
+
+    private function createRepositoryFile(string $name, string $model)
+    {
         $repositoryTemplate = str_replace([
             '{{repositoryName}}',
             '{{model}}'
@@ -63,9 +72,5 @@ class CreateRepositoryCommand extends Command
         }
         file_put_contents(app_path("Repositories/{$name}.php"), $repositoryTemplate);
         $this->info("Repository $name is created");
-    }
-
-    protected function getStub($type) {
-        return file_get_contents(__DIR__ . "/../../resources/stubs/$type.stub");
     }
 }
