@@ -65,6 +65,14 @@ class CreateViewCommand extends Command
         }
     }
 
+    /**
+     * createView
+     *
+     * @params string $resourcePath
+     * @params string $value
+     *
+     * @return void
+     */
     private function createView(string $resourcePath, string $value): void
     {
         if(!File::exists($resourcePath)) {
@@ -100,13 +108,20 @@ class CreateViewCommand extends Command
         file_put_contents("{$resourcePath}/{$fileName}.blade.php", $bladeTemplate);
     }
 
+    /**
+     * generateComponents
+     *
+     * @params string $folderName
+     * @params string $resourcePath
+     * #params string $stub
+     *
+     * @return string
+     */
     private function generateComponents(string $folderName, string $resourcePath, string $stub): string
     {
-        /* $indexTemplate = str_replace(['folder_name'], [$folderName], $this->getStub('Table')); */
         $template = $this->getStub($stub);
         $resourcePath = "{$resourcePath}/components";
         if(!File::exists($resourcePath)) {
-            // path does not exist
             File::makeDirectory($resourcePath,  0777, true, true);
         }
         $stub = Str::lower($stub);

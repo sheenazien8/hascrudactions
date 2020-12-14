@@ -28,7 +28,6 @@ class HascrudactionsServiceProvider extends ServiceProvider
                 __DIR__.'/../config/config.php' => config_path('hascrudactions.php'),
             ], 'config');
 
-
             // Publishing the views.
             /* $this->publishes([ */
             /*     __DIR__.'/../resources/views' => resource_path('views/vendor/hascrudactions'), */

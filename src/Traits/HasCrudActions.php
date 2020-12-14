@@ -33,12 +33,16 @@ trait HasCrudActions
      */
     public function index()
     {
-        get_lang();
+        if (function_exists('get_lang')) {
+            get_lang();
+        }
 
         $request = resolve($this->indexRequest);
 
-        if ($this->permission && $request->type != 'select2') {
-            $this->authorize("browse-$this->permission");
+        if (isset($this->permission)) {
+            if ($this->permission && $request->type != 'select2') {
+                $this->authorize("browse-$this->permission");
+            }
         }
 
         if ($request->ajax() || isset($this->return) && $this->return == 'api') {
@@ -97,7 +101,7 @@ trait HasCrudActions
             }
         }
 
-        $resources = $this->permission;
+        $resources = $this->permission ?? $this->redirect;
 
         if (isset($this->resources)) {
             $resources = $this->resources;
@@ -112,9 +116,12 @@ trait HasCrudActions
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\View\View
-     */ public function create(): View
+     */
+    public function create(): View
     {
-        get_lang();
+        if (function_exists('get_lang')) {
+            get_lang();
+        }
 
         $this->authorize("create-$this->permission");
 
@@ -128,7 +135,9 @@ trait HasCrudActions
      */
     public function store()
     {
-        get_lang();
+        if (function_exists('get_lang')) {
+            get_lang();
+        }
 
         $request = resolve($this->storeRequest);
 
@@ -170,7 +179,9 @@ trait HasCrudActions
      */
     public function show(int $model)
     {
-        get_lang();
+        if (function_exists('get_lang')) {
+            get_lang();
+        }
 
         $this->authorize("browse-{$this->permission}");
 
@@ -193,7 +204,6 @@ trait HasCrudActions
 
                 return Response::success($resources);
             }
-            /* $data = $this->repository->find($model); */
 
             return Response::success($data->toArray());
         }
@@ -211,7 +221,9 @@ trait HasCrudActions
      */
     public function edit(int $model)
     {
-        get_lang();
+        if (function_exists('get_lang')) {
+            get_lang();
+        }
 
         $data = $this->repository->find($model);
 
@@ -228,7 +240,9 @@ trait HasCrudActions
      */
     public function update(int $model): RedirectResponse
     {
-        get_lang();
+        if (function_exists('get_lang')) {
+            get_lang();
+        }
 
         $data = $this->repository->find($model);
 
@@ -273,7 +287,9 @@ trait HasCrudActions
      */
     public function destroy(int $model): RedirectResponse
     {
-        get_lang();
+        if (function_exists('get_lang')) {
+            get_lang();
+        }
 
         $this->authorize("delete-{$this->permission}");
 
@@ -299,7 +315,9 @@ trait HasCrudActions
      */
     public function bulkDestroy(): RedirectResponse
     {
-        get_lang();
+        if (function_exists('get_lang')) {
+            get_lang();
+        }
 
         $request = resolve($this->bulkDestroyRequest);
 

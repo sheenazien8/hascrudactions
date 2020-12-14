@@ -5,6 +5,7 @@ namespace Sheenazien8\Hascrudactions\Console;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Sheenazien8\Hascrudactions\Traits\GetStubTrait;
 
@@ -39,22 +40,27 @@ class CreateHascruActionCommand extends Command
     /**
      * Execute the console command.
      *
-     * @return mixed
+     * @return void
      */
     public function handle(): void
     {
-        $model = $this->argument('model');
-        $viewPath = Str::lower($model);
-        $repositoryClass = "{$model}Repository";
-        if(!File::exists(app_path("Http/Requests/{$model}"))) {
-            // path does not exist
-            File::makeDirectory(app_path("Http/Requests/{$model}"), 0777, true, true);
-            $this->generateRequest($model);
-        } else {
-            $this->generateRequest($model);
+        try {
+            $model = $this->argument('model');
+            $viewPath = Str::lower($model);
+            $repositoryClass = "{$model}Repository";
+            if(!File::exists(app_path("Http/Requests/{$model}"))) {
+                // path does not exist
+                File::makeDirectory(app_path("Http/Requests/{$model}"), 0777, true, true);
+                $this->generateRequest($model);
+            } else {
+                $this->generateRequest($model);
+            }
+            $this->generateRepository($repositoryClass, $model);
+            $this->createController($model, $viewPath, $repositoryClass);
+            $this->generateView($model);
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
         }
-        $this->generateRepository($repositoryClass, $model);
-        $this->createController($model, $viewPath, $repositoryClass);
     }
 
     private function generateRequest(string $model): void
@@ -104,5 +110,14 @@ class CreateHascruActionCommand extends Command
         );
         file_put_contents(app_path("Http/Controllers/{$controllerName}.php"), $requestClasName);
         $this->info("Controller $controllerName is created");
+    }
+
+    private function generateView(string $model)
+    {
+        $model = Str::lower($model);
+        Artisan::call('hascrudaction:view', [
+            'folder_name' => $model,
+        ]);
+        $this->info("View for $model is created");
     }
 }

@@ -43,7 +43,6 @@ class InstallCommand extends Command
         /* FIXME: cant provide the config <22-11-20 sheenazien8> */
         Artisan::call('vendor:publish', [
             '--provider' => Sheenazien8\Hascrudactions\HascrudactionsServiceProvider::class,
-            '--tag' => 'config'
         ]);
         $this->info('Command success');
     }
