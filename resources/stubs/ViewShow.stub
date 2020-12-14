@@ -1,9 +1,9 @@
-@extends(config('wrapper.layouts'))
+@extends(config('hascrudactions.wrapper.layouts'))
 
-@section(config('wrapper.section'))
+@section(config('hascrudactions.wrapper.section'))
   {{content}}
 @endsection
 
-@push(config('wrapper.javascript'))
+@push(config('hascrudactions.wrapper.javascript'))
 @endpush
 

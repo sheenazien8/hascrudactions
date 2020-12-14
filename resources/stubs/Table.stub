@@ -2,7 +2,7 @@
   {{ $dataTable->table() }}
 </div>
 
-@push(config('wrapper.javascript'))
+@push(config('hascrudactions.wrapper.javascript'))
   {{ $dataTable->scripts() }}
 @endpush
 

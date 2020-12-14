@@ -1,6 +1,6 @@
-@extends(config('wrapper.layouts'))
+@extends(config('hascrudactions.wrapper.layouts'))
 
-@section(config('wrapper.section'))
+@section(config('hascrudactions.wrapper.section'))
   @include('{{folder_name}}.components.table')
 @endsection
 
