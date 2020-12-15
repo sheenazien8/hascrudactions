@@ -119,14 +119,16 @@ class CreateViewCommand extends Command
      */
     private function generateComponents(string $folderName, string $resourcePath, string $stub): string
     {
-        $template = $this->getStub($stub);
+        $search = ['{{folder_name}}'];
+        $replace = $this->argument('folder_name');
         $resourcePath = "{$resourcePath}/components";
         if(!File::exists($resourcePath)) {
             File::makeDirectory($resourcePath,  0777, true, true);
         }
+        $bladeTemplate = str_replace($search, $replace, $this->getStub("{$stub}"));
         $stub = Str::lower($stub);
-        file_put_contents("{$resourcePath}/{$stub}.blade.php", $template);
+        file_put_contents("{$resourcePath}/{$stub}.blade.php", $bladeTemplate);
 
-        return $template;
+        return $bladeTemplate;
     }
 }

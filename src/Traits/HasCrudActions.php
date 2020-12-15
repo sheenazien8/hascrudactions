@@ -10,6 +10,8 @@ use Illuminate\Support\Str;
 use Illuminate\View\View;
 use Lakasir\UserLoggingActivity\Facades\Activity;
 use Maatwebsite\Excel\Facades\Excel;
+use Sheenazien8\Hascrudactions\Helpers;
+
 
 /**
  * Trait HasCrudActions
@@ -123,7 +125,9 @@ trait HasCrudActions
             get_lang();
         }
 
-        $this->authorize("create-$this->permission");
+        if (isset($this->permission)) {
+            $this->authorize("create-$this->permission");
+        }
 
         return view("{$this->viewPath}.create");
     }
@@ -156,7 +160,7 @@ trait HasCrudActions
         } else {
             $data = $this->repository->create($request);
         }
-        $message = __('app.global.message.create').' '. ucfirst($this->permission);
+        $message = __('hascrudactions::app.global.message.create').' '. ucfirst($this->permission ?? '');
 
         /* if (method_exists($data, 'logs')) { */
         /*     Activity::modelable($data)->auth()->creating(); */
@@ -166,9 +170,9 @@ trait HasCrudActions
             return Response::success($data);
         }
 
-        flash()->success(dash_to_space($message));
-
-        return redirect()->to($this->redirect);
+        return redirect()->to($this->redirect)->with([
+            'message' => 'success'
+        ], Helpers::dash_to_space($message));
     }
 
     /**
@@ -183,7 +187,9 @@ trait HasCrudActions
             get_lang();
         }
 
-        $this->authorize("browse-{$this->permission}");
+        if (isset($this->permission)) {
+            $this->authorize("browse-{$this->permission}");
+        }
 
         $data = $this->repository->find($model);
 
@@ -226,8 +232,9 @@ trait HasCrudActions
         }
 
         $data = $this->repository->find($model);
-
-        $this->authorize("update-{$this->permission}");
+        if (isset($this->permission)) {
+            $this->authorize("update-{$this->permission}");
+        }
 
         return view("{$this->viewPath}.edit", compact('data'));
     }
@@ -264,7 +271,7 @@ trait HasCrudActions
             $data = $this->repository->update($request, $data);
         }
 
-        $message = __('app.global.message.update').' '. ucfirst($this->permission);
+        $message = __('hascrudactions::app.global.message.update').' '. ucfirst($this->permission);
 
         if (isset($this->return) && $this->return == 'api') {
             return response()->json($data, 200);
@@ -274,9 +281,9 @@ trait HasCrudActions
         /*     Activity::modelable($data)->auth()->updating(); */
         /* } */
 
-        flash()->success(dash_to_space($message));
-
-        return redirect()->to($this->redirect);
+        return redirect()->to($this->redirect)->with([
+            'message' => 'success'
+        ], Helpers::dash_to_space($message));
     }
 
     /**
@@ -291,21 +298,20 @@ trait HasCrudActions
             get_lang();
         }
 
-        $this->authorize("delete-{$this->permission}");
+        if (isset($this->permission)) {
+            $this->authorize("delete-{$this->permission}");
+        }
 
         $data = $this->repository->find($model);
 
-        /* if (method_exists($data, 'logs')) { */
-        /*     Activity::sync()->modelable($data)->auth()->deleting(); */
-        /* } */
-
         $data->delete();
 
-        $message = __('app.global.message.delete').' '. ucfirst($this->permission);
+        $message = __('hascrudactions::app.global.message.delete').' '. ucfirst($this->permission ?? '');
 
-        flash()->success(dash_to_space($message));
 
-        return redirect()->to($this->redirect);
+        return redirect()->to($this->redirect)->with([
+            'message' => 'success'
+        ], Helpers::dash_to_space($message));
     }
 
     /**
@@ -323,11 +329,11 @@ trait HasCrudActions
 
         $this->repository->bulkDestroy($request);
 
-        $message = __('app.global.message.delete').' '. ucfirst($this->permission);
+        $message = __('hascrudactions::app.global.message.delete').' '. ucfirst($this->permission);
 
-        flash()->success(dash_to_space($message));
-
-        return redirect()->back();
+        return redirect()->back()->with([
+            'message' => 'success'
+        ], Helpers::dash_to_space($message));
     }
 
     public function downloadTemplate()

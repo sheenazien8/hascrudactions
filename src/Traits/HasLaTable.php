@@ -2,7 +2,9 @@
 
 namespace Sheenazien8\Hascrudactions\Traits;
 
-use App\DataTables\DefaultTable;
+use Sheenazien8\Hascrudactions\LaTable\DefaultLatable;
+
+
 
 /**
  * Trait HasLaTable
@@ -12,6 +14,6 @@ trait HasLaTable
 {
     public function table($query)
     {
-        return $this->latable ? new $this->latable($query) : new DefaultTable($query);
+        return $this->latable ? new $this->latable($query) : new DefaultLatable($query);
     }
 }

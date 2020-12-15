@@ -7,9 +7,13 @@ use Sheenazien8\Hascrudactions\Console\CreateHascruActionCommand;
 use Sheenazien8\Hascrudactions\Console\CreateRepositoryCommand;
 use Sheenazien8\Hascrudactions\Console\CreateViewCommand;
 use Sheenazien8\Hascrudactions\Console\InstallCommand;
+use Sheenazien8\Hascrudactions\Traits\InjectBladeResolve;
+use Sheenazien8\Hascrudactions\Views\Components\Form;
+use Sheenazien8\Hascrudactions\Views\Components\IndexTable;
 
 class HascrudactionsServiceProvider extends ServiceProvider
 {
+    use InjectBladeResolve;
     /**
      * Bootstrap the application services.
      */
@@ -20,8 +24,13 @@ class HascrudactionsServiceProvider extends ServiceProvider
          */
         // $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'hascrudactions');
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'hascrudactions');
+        $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'hascrudactions');
         // $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
         // $this->loadRoutesFrom(__DIR__.'/routes.php');
+        $this->loadViewComponentsAs('components', [
+            'index-table' => IndexTable::class,
+            'form' => Form::class
+        ]);
 
         if ($this->app->runningInConsole()) {
             $this->publishes([

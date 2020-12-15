@@ -22,7 +22,7 @@ abstract class LaTable extends DataTable implements Responsable
     * @var defaultRawColumns
     */
     protected $defaultRawColumns = [
-        'checkbox', 'created_at', 'action'
+        'created_at', 'action'
     ];
 
     /**
@@ -42,18 +42,18 @@ abstract class LaTable extends DataTable implements Responsable
     {
         return datatables($this->query)
             ->addColumn('checkbox', function ($model) {
-                return view('partials.table.checkbox', compact('model'));
+                return view('hascrudactions::partials.table.checkbox', compact('model'));
             })
             ->addColumn('created_at', function ($model) {
                 $date = (new Carbon($model->created_at))->diffForHumans();
-                return view('partials.table.date')->with('date', $date);
+                return view('hascrudactions::partials.table.date')->with('date', $date);
             })
             ->setRowId(function ($model) {
                 return $model->id;
             })
             ->addColumn('action', function ($model) {
                 $resources = explode('.', request()->route()->action['as'])[0];
-                return view('partials.table.action', [
+                return view('hascrudactions::partials.table.action', [
                     'delete' => route("{$resources}.destroy", $model->id),
                     'model' => $model
                 ]);

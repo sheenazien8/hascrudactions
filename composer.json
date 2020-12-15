@@ -21,6 +21,9 @@
         "phpunit/phpunit": "^8.0"
     },
     "autoload": {
+        "files": [
+            "src/helpers.php"
+        ],
         "psr-4": {
             "Sheenazien8\\Hascrudactions\\": "src"
         }
