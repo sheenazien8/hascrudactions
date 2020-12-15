@@ -1,0 +1,7 @@
+@extends(config('hascrudactions.wrapper.layouts'))
+
+@section(config('hascrudactions.wrapper.section'))
+  @include('{{folder_name}}.components.form', [
+    'route' => route("{$resource}.store")
+  ])
+@endsection

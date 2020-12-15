@@ -1,0 +1,9 @@
+@extends(config('hascrudactions.wrapper.layouts'))
+
+@section(config('hascrudactions.wrapper.section'))
+  {{content}}
+@endsection
+
+@push(config('hascrudactions.wrapper.javascript'))
+@endpush
+

@@ -15,15 +15,15 @@
             "role": "Developer"
         }
     ],
-    "require": {
-        "php": "^7.1",
-        "illuminate/support": "^6.0"
-    },
+    "require": {},
     "require-dev": {
         "orchestra/testbench": "^4.0",
         "phpunit/phpunit": "^8.0"
     },
     "autoload": {
+        "files": [
+            "src/helpers.php"
+        ],
         "psr-4": {
             "Sheenazien8\\Hascrudactions\\": "src"
         }
@@ -36,7 +36,6 @@
     "scripts": {
         "test": "vendor/bin/phpunit",
         "test-coverage": "vendor/bin/phpunit --coverage-html coverage"
-
     },
     "config": {
         "sort-packages": true

@@ -1,0 +1,29 @@
+<div class="row col">
+    <v-button float="right" text="{{ __('text') }}" to="{{ route('{{folder_name}}.create') }}" icon="icon"></v-button>
+</div>
+<br>
+<x-components-index-table :title="__('title')" resources="category">
+    @slot('thead')
+        {{-- Your Thead --}}
+    @endslot
+</x-components-index-table>
+
+@push(config('hascrudactions.wrapper.javascript'))
+  <script>
+    $(function() {
+      $('#{{ $resources }}-table').DataTable({
+        processing: true,
+        serverSide: true,
+        ajax: '{!! route($resources.'.index') !!}',
+        columns: [
+          { data: 'checkbox', name: '#', orderable: false, searchable: false, width: '3%' },
+          // Your Row
+          { data: 'action', name: 'action', orderable: false, searchable: false, width: '3%' },
+        ]
+      });
+    });
+  </script>
+@endpush
+
+
+
