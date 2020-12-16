@@ -29,11 +29,7 @@
     <div class="card">
       <div class="card-header">
         <div class="row">
-          <div class="col-md-8">
             <h4 class="pt-3 pb-3">{{ $title }}</h4>
-          </div>
-          <div class="col-md-4 pt-3 pb-3">
-          </div>
         </div>
       </div>
       <div class="card-body">

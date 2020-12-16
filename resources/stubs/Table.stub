@@ -2,7 +2,7 @@
     <v-button float="right" text="{{ __('text') }}" to="{{ route('{{folder_name}}.create') }}" icon="icon"></v-button>
 </div>
 <br>
-<x-components-index-table :title="__('title')" resources="category">
+<x-components-index-table :title="__('title')" :resources="$resources">
     @slot('thead')
         {{-- Your Thead --}}
     @endslot
