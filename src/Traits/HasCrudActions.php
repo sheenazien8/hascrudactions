@@ -128,8 +128,15 @@ trait HasCrudActions
         if (isset($this->permission)) {
             $this->authorize("create-$this->permission");
         }
+        $resources = $this->permission ?? $this->redirect;
 
-        return view("{$this->viewPath}.create");
+        if (isset($this->resources)) {
+            $resources = $this->resources;
+        }
+
+        return view("{$this->viewPath}.create", [
+            'resources' => $resources
+        ]);
     }
 
     /**
@@ -145,7 +152,7 @@ trait HasCrudActions
 
         $request = resolve($this->storeRequest);
 
-        if ($this->permission) {
+        if (isset($this->permission)) {
             $this->authorize("create-$this->permission");
         }
 
@@ -235,8 +242,16 @@ trait HasCrudActions
         if (isset($this->permission)) {
             $this->authorize("update-{$this->permission}");
         }
+        $resources = $this->permission ?? $this->redirect;
 
-        return view("{$this->viewPath}.edit", compact('data'));
+        if (isset($this->resources)) {
+            $resources = $this->resources;
+        }
+
+        return view("{$this->viewPath}.edit", [
+            'resources' => $resources,
+            'data' => $data
+        ]);
     }
 
     /**
@@ -255,7 +270,7 @@ trait HasCrudActions
 
         $request = resolve($this->updateRequest);
 
-        if ($this->permission) {
+        if (isset($this->permission)) {
             $this->authorize("update-{$this->permission}");
         }
 
@@ -271,7 +286,7 @@ trait HasCrudActions
             $data = $this->repository->update($request, $data);
         }
 
-        $message = __('hascrudactions::app.global.message.update').' '. ucfirst($this->permission);
+        $message = __('hascrudactions::app.global.message.update').' '. ucfirst($this->permission ?? '');
 
         if (isset($this->return) && $this->return == 'api') {
             return response()->json($data, 200);

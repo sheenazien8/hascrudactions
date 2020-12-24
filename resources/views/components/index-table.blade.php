@@ -5,11 +5,11 @@
         <thead>
           <tr>
             @if (!$withoutcheckbox)
-              @include('partials.table.select-all')
+              @include('hascrudactions::partials.table.select-all')
             @endif
             {{ $thead }}
             @if (!$withoutTime)
-              <th> {{ __('app.global.created_at') }}</th>
+              <th> {{ __('hascrudactions::app.global.created_at') }}</th>
             @endif
             @if (!$withoutbulk)
               <th></th>
@@ -32,7 +32,7 @@
       </div>
       <div class="card-body">
         <div class="table-responsive">
-          <table class="table table-hover" id="{{ $resources }}-table">
+          <table class="table table-hover" id="{{ $resources }}-table" width="100%">
             <thead>
               <tr>
                 <form method="POST" accept-charset="utf-8">
