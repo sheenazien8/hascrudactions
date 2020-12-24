@@ -1,7 +1,4 @@
-<form action="{{ $route }}" method="POST">
-  @csrf
-  @if(isset($method))
-    @method($method)
-  @endif
-  // Add Your Input
-</form>
+<x-components-form :route="$route" :title="__($resources)" :method="$method ?? null">
+    // input your form
+</x-components-form>
+
