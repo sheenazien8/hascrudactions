@@ -59,8 +59,7 @@ class IndexTable extends Component
         bool $withoutcard = false,
         bool $withoutTime = false,
         bool $withoutbulk = false
-    )
-    {
+    ) {
         $this->title = $title;
         $this->resources = $resources;
         $this->withoutaction = $withoutaction;
@@ -68,6 +67,7 @@ class IndexTable extends Component
         $this->withoutcard = $withoutcard;
         $this->withoutTime = $withoutTime;
         $this->withoutbulk = $withoutbulk;
+        $this->thead = $thead;
     }
 
     /**
@@ -80,4 +80,3 @@ class IndexTable extends Component
         return view('hascrudactions::components.index-table');
     }
 }
-

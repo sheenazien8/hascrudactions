@@ -2,6 +2,6 @@
 
 @section(config('hascrudactions.wrapper.section'))
   @include('{{folder_name}}.components.form', [
-    'route' => route("{$resource}.store")
+    'route' => route("{$resources}.store")
   ])
 @endsection

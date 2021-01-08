@@ -2,13 +2,11 @@
 
 namespace Sheenazien8\Hascrudactions\Traits;
 
-use App\Facades\Response;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\JsonResponse;
-
 use Illuminate\Http\Exceptions\HttpResponseException;
-
 use Illuminate\Validation\ValidationException;
+use Sheenazien8\Hascrudactions\Facades\Response;
 
 /**
  * Trait JsonValidateResponse

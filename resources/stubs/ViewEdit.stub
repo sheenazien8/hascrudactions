@@ -4,7 +4,7 @@
   @include('{{folder_name}}.components.form', [
     'data' => $data,
     'method' => 'PUT',
-    'route' => route("{$resource}.update", $data)
+    'route' => route("{$resources}.update", $data)
   ])
 @endsection
 

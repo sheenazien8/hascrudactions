@@ -2,31 +2,38 @@
 
 namespace Sheenazien8\Hascrudactions\Interfaces;
 
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Sheenazien8\Hascrudactions\Abstracts\LaTable;
 
 interface Repository
 {
-    public function datatable(Request $request);
+    public function datatable(Request $request): LaTable;
 
-    public function paginate(Request $request, array $columns, string $search);
+    public function paginate(Request $request, array $columns, string $search): LengthAwarePaginator;
 
-    public function all(Request $request, array $columns, string $search);
+    public function all(Request $request, array $columns, string $search): Collection;
 
-    public function get(Request $request, array $columns, string $search);
+    public function get(Request $request, array $columns, string $search): Collection;
 
-    public function create(Request $request);
+    public function create(Request $request): Model;
 
-    public function update(Request $request, $model);
+    public function update(Request $request, $model): Model;
 
-    public function delete(int $id);
+    public function delete(int $id): bool;
 
-    public function find(int $id);
+    public function find(int $id): Model;
 
-    public function bulkDestroy(Request $request, string $column);
+    public function findByUuid(string $id): Model;
 
-    public function findByKeyArray(array $key, string $id = "id");
+    public function bulkDestroy(Request $request, string $column): void;
 
-    public function getModel(): string;
+    public function findByKeyArray(array $key, string $id = "id"): Collection;
 
-    public function getObjectModel(): Object;
+    public function getObjectModel(): Model;
+
+    public function query(): Builder;
 }

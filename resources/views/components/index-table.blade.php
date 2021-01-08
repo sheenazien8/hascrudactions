@@ -5,11 +5,11 @@
         <thead>
           <tr>
             @if (!$withoutcheckbox)
-              @include('partials.table.select-all')
+              @include('hascrudactions::partials.table.select-all')
             @endif
             {{ $thead }}
             @if (!$withoutTime)
-              <th> {{ __('app.global.created_at') }}</th>
+              <th> {{ __('hascrudactions::app.global.created_at') }}</th>
             @endif
             @if (!$withoutbulk)
               <th></th>
@@ -28,17 +28,11 @@
   @else
     <div class="card">
       <div class="card-header">
-        <div class="row">
-          <div class="col-md-8">
-            <h4 class="pt-3 pb-3">{{ $title }}</h4>
-          </div>
-          <div class="col-md-4 pt-3 pb-3">
-          </div>
-        </div>
+          <h4 class="pt-3 pb-3">{{ $title }}</h4>
       </div>
       <div class="card-body">
         <div class="table-responsive">
-          <table class="table table-hover" id="{{ $resources }}-table">
+          <table class="table table-hover" id="{{ $resources }}-table" width="100%">
             <thead>
               <tr>
                 <form method="POST" accept-charset="utf-8">
