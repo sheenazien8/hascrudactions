@@ -6,6 +6,13 @@ use Sheenazien8\Hascrudactions\Abstracts\Repository as RepositoryAbstract;
 
 class {{repositoryName}} extends RepositoryAbstract
 {
-    protected string $model = '{{model}}';
+    /**
+     * Inject Model To Repository
+     */
+    public function __construct()
+    {
+        parent::__construct(new \{{model}}());
+    }
+
 }
 
