@@ -1,7 +1,3 @@
-<div class="row col">
-    <v-button float="right" text="{{ __('text') }}" to="{{ route('{{folder_name}}.create') }}" icon="icon"></v-button>
-</div>
-<br>
 <x-components-index-table :title="__('title')" :resources="$resources">
     @slot('thead')
         {{-- Your Thead --}}
@@ -18,6 +14,7 @@
         columns: [
           { data: 'checkbox', name: '#', orderable: false, searchable: false, width: '3%' },
           // Your Row
+          { data: 'created_at' },
           { data: 'action', name: 'action', orderable: false, searchable: false, width: '3%' },
         ]
       });
