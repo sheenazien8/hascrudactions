@@ -4,8 +4,6 @@ namespace Sheenazien8\Hascrudactions\Traits;
 
 use Sheenazien8\Hascrudactions\LaTable\DefaultLatable;
 
-
-
 /**
  * Trait HasLaTable
  * @author sheenazien8

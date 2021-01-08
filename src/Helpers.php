@@ -2,6 +2,9 @@
 
 namespace Sheenazien8\Hascrudactions;
 
+use Illuminate\Support\Str;
+
+
 /**
  * Class Helpers
  * @author sheenazien8
@@ -16,5 +19,4 @@ class Helpers
 
         return $capital ? Str::upper($name) : $name;
     }
-
 }

@@ -8,10 +8,8 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
-use Lakasir\UserLoggingActivity\Facades\Activity;
 use Maatwebsite\Excel\Facades\Excel;
 use Sheenazien8\Hascrudactions\Helpers;
-
 
 /**
  * Trait HasCrudActions
@@ -55,7 +53,7 @@ trait HasCrudActions
                 if (!is_array($this->indexService)) {
                     throw new ServiceActionsException('Index Service property must be array');
                 }
-                $resources = ( new $this->indexService[0] )->{$this->indexService[1]}($request);
+                $resources = (new $this->indexService[0])->{$this->indexService[1]}($request);
 
                 if (isset($this->return) && $this->return == 'api') {
                     return Response::success($resources);
@@ -69,13 +67,12 @@ trait HasCrudActions
                 if ($request->type == 'select2') {
                     $result = $this->repository->query()->select('id', $request->key)->when(
                         $request->term && $request->key,
-                        function ($query) use ($request)
-                        {
-                            return $query->where($request->key, 'LIKE', '%%'.$request->term.'%%');
-                        })->when(
+                        function ($query) use ($request) {
+                            return $query->where($request->key, 'LIKE', '%%' . $request->term . '%%');
+                        }
+                    )->when(
                         $request->oldValue,
-                        function ($query) use($request)
-                        {
+                        function ($query) use ($request) {
                             $str = ltrim($request->oldValue, '[');
                             $str = rtrim($str, ']');
                             $array = explode(',', $str);
@@ -85,10 +82,10 @@ trait HasCrudActions
                                 }
                                 return $query->where('id', $request->oldValue);
                             }
-                        })->when($request->filter, function ($query) use ($request)
-                        {
-                            return $query->where($request->filter['key'], $request->filter['value']);
-                        })->get()->toArray();
+                        }
+                    )->when($request->filter, function ($query) use ($request) {
+                        return $query->where($request->filter['key'], $request->filter['value']);
+                    })->get()->toArray();
 
                     return Response::success($result);
                 }
@@ -128,6 +125,7 @@ trait HasCrudActions
         if (isset($this->permission)) {
             $this->authorize("create-$this->permission");
         }
+
         $resources = $this->permission ?? $this->redirect;
 
         if (isset($this->resources)) {
@@ -163,11 +161,11 @@ trait HasCrudActions
             if (!is_array($this->storeService)) {
                 throw new ServiceActionsException('Store Service property must be array');
             }
-            $data = ( new $this->storeService[0] )->{$this->storeService[1]}($request);
+            $data = (new $this->storeService[0])->{$this->storeService[1]}($request);
         } else {
             $data = $this->repository->create($request);
         }
-        $message = __('hascrudactions::app.global.message.create').' '. ucfirst($this->permission ?? '');
+        $message = __('hascrudactions::app.global.message.create') . ' ' . ucfirst($this->permission ?? '');
 
         /* if (method_exists($data, 'logs')) { */
         /*     Activity::modelable($data)->auth()->creating(); */
@@ -209,7 +207,7 @@ trait HasCrudActions
                 if (!is_array($this->showService)) {
                     throw new ServiceActionsException('Index Service property must be array');
                 }
-                $resources = ( new $this->showService[0] )->{$this->showService[1]}($data);
+                $resources = (new $this->showService[0])->{$this->showService[1]}($data);
 
                 if (isset($this->return) && $this->return == 'api') {
                     return Response::success($resources);
@@ -221,9 +219,16 @@ trait HasCrudActions
             return Response::success($data->toArray());
         }
 
-        /* $data = $this->repository->find($model); */
+        $resources = $this->permission ?? $this->redirect;
 
-        return view("{$this->viewPath}.show", compact('data'));
+        if (isset($this->resources)) {
+            $resources = $this->resources;
+        }
+
+        return view("{$this->viewPath}.show", [
+            'resources' => $resources,
+            'data' => $data
+        ]);
     }
 
     /**
@@ -286,7 +291,7 @@ trait HasCrudActions
             $data = $this->repository->update($request, $data);
         }
 
-        $message = __('hascrudactions::app.global.message.update').' '. ucfirst($this->permission ?? '');
+        $message = __('hascrudactions::app.global.message.update') . ' ' . ucfirst($this->permission ?? '');
 
         if (isset($this->return) && $this->return == 'api') {
             return response()->json($data, 200);
@@ -321,7 +326,7 @@ trait HasCrudActions
 
         $data->delete();
 
-        $message = __('hascrudactions::app.global.message.delete').' '. ucfirst($this->permission ?? '');
+        $message = __('hascrudactions::app.global.message.delete') . ' ' . ucfirst($this->permission ?? '');
 
 
         return redirect()->to($this->redirect)->with([
@@ -344,7 +349,7 @@ trait HasCrudActions
 
         $this->repository->bulkDestroy($request);
 
-        $message = __('hascrudactions::app.global.message.delete').' '. ucfirst($this->permission);
+        $message = __('hascrudactions::app.global.message.delete') . ' ' . ucfirst($this->permission);
 
         return redirect()->back()->with([
             'message' => 'success'
