@@ -24,7 +24,13 @@ abstract class Repository implements RepositoryInterface
         $this->model = $model;
     }
 
-
+    /**
+     * Assign DataTable
+     *
+     * @param Request $request
+     *
+     * @return LaTable
+     */
     public function datatable(Request $request): LaTable
     {
         $items = $this->query()->latest()->get();
@@ -32,26 +38,64 @@ abstract class Repository implements RepositoryInterface
         return $this->getObjectModel()->table($items);
     }
 
+    /**
+     * Find by primary key
+     *
+     * @param int $id
+     *
+     * @return Model
+     */
     public function find(int $id): Model
     {
         return $this->query()->findOrFail($id);
     }
 
+    /**
+     * findByKeyArray
+     *
+     * @param array $key
+     * @param string $column (optional)
+     *
+     * @return Collection
+     */
     public function findByKeyArray(array $key, string $column = "id"): Collection
     {
         return $this->query()->whereIn($column, $key)->get();
     }
 
+    /**
+     * delete method
+     *
+     * @param int $id
+     *
+     * @return bool
+     */
     public function delete(int $id): bool
     {
         return $this->query()->find($id)->delete();
     }
 
+    /**
+     * findByUuid
+     *
+     * @param string $id
+     *
+     * @return Model
+     */
     public function findByUuid(string $id): Model
     {
         return $this->query()->find($id);
     }
 
+    /**
+     * Pagination
+     *
+     * @param Request $request
+     * @param array $columns (optional)
+     * @param string $search
+     *
+     * @return LengthAwarePaginator
+     */
     public function paginate(Request $request, array $columns = ['*'], string $search): LengthAwarePaginator
     {
         $self = $this;
@@ -66,6 +110,15 @@ abstract class Repository implements RepositoryInterface
             ->paginate($request->per_page);
     }
 
+    /**
+     * all
+     *
+     * @param Request $request
+     * @param array $columns (optional)
+     * @param string $search
+     *
+     * @return Collection
+     */
     public function all(Request $request, array $columns = ['*'], string $search): Collection
     {
         $self = $this;
@@ -80,7 +133,7 @@ abstract class Repository implements RepositoryInterface
             ->get();
     }
 
-    public function get($request, $columns, $search): Collection
+    public function get($request, $columns = ['*'], $search): Collection
     {
         return $this->query()->select($columns)->when(!is_null($request->s), function ($query) use ($request, $search) {
             return $query->where($search, 'LIKE', $request->s . '%%');
