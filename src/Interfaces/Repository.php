@@ -13,15 +13,15 @@ interface Repository
 {
     public function datatable(Request $request): LaTable;
 
-    public function paginate(Request $request, array $columns, string $search): LengthAwarePaginator;
+    public function paginate(Request $request, array $columns = ['*'], string $search): LengthAwarePaginator;
 
-    public function all(Request $request, array $columns, string $search): Collection;
+    public function all(Request $request, array $columns = ['*'], string $search): Collection;
 
-    public function get(Request $request, array $columns, string $search): Collection;
+    public function get(Request $request, array $columns = ['*'], string $search): Collection;
 
     public function create(Request $request): Model;
 
-    public function update(Request $request, $model): Model;
+    public function update(Request $request, Model $model): Model;
 
     public function delete(int $id): bool;
 
@@ -29,11 +29,11 @@ interface Repository
 
     public function findByUuid(string $id): Model;
 
-    public function bulkDestroy(Request $request, string $column): void;
+    public function bulkDestroy(Request $request, string $column = "id"): void;
 
     public function findByKeyArray(array $key, string $id = "id"): Collection;
 
-    public function getObjectModel(): Model;
+    public function getObjectModel(array $data = null): Model;
 
     public function query(): Builder;
 }

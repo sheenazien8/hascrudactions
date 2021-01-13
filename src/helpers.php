@@ -20,6 +20,6 @@ if (!function_exists('price_format')) {
 if (!function_exists('get_lang')) {
     function get_lang()
     {
-        app()->setLocale(session()->get('locale') ?? 'id');
+        app()->setLocale(session()->get('locale') ?? 'en');
     }
 }

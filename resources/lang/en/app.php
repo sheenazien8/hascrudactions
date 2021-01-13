@@ -1,6 +1,7 @@
 <?php
 return [
     'global' => [
+        'detail' => 'Detail',
         'submit' => 'Submit',
         'action' => 'Action',
         'edit' => 'Edit',
@@ -14,19 +15,29 @@ return [
         'download' => 'Download :title',
         'import' => 'Import :title',
         'message' => [
-            'create' => 'Create',
-            'update' => 'Update',
-            'delete' => 'Delete',
-            'success' => 'Success',
-            'error' => 'Error',
+            'success' => [
+                'create' => 'Create Success',
+                'update' => 'Update Success',
+                'delete' => 'Delete Success',
+            ],
+            'error' => [
+                'create' => 'Create Error',
+                'update' => 'Update Error',
+                'delete' => 'Delete Error',
+            ],
+            'fail' => [
+                'create' => 'Create Fail',
+                'update' => 'Update Fail',
+                'delete' => 'Delete Fail',
+            ],
         ],
         'yes' => 'Yes',
         'no' => 'No',
         'login_cashier' => 'Login as Cashier',
         'payit' => 'Pay It',
         'more_info' => 'More Info',
-        'checkAll' => 'Check All'
+        'checkAll' => 'Check All',
+        'bulk-destroy' => 'Bulk Destroy'
     ],
 
 ];
-

@@ -48,7 +48,7 @@ class CreateHascruActionCommand extends Command
             $model = $this->argument('model');
             $viewPath = Str::lower($model);
             $repositoryClass = "{$model}Repository";
-            if(!File::exists(app_path("Http/Requests/{$model}"))) {
+            if (!File::exists(app_path("Http/Requests/{$model}"))) {
                 // path does not exist
                 File::makeDirectory(app_path("Http/Requests/{$model}"), 0777, true, true);
                 $this->generateRequest($model);
@@ -66,9 +66,10 @@ class CreateHascruActionCommand extends Command
     private function generateRequest(string $model): void
     {
         foreach (['Index', 'Store', 'Update', 'BulkDelete'] as $value) {
-            $requestClasName = str_replace([
-                '{{className}}',
-                '{{model}}',
+            $requestClasName = str_replace(
+                [
+                    '{{className}}',
+                    '{{model}}',
                 ],
                 [
                     $value,
@@ -94,7 +95,8 @@ class CreateHascruActionCommand extends Command
     private function createController(string $model, string $viewPath, string $repositoryClass): void
     {
         $controllerName = "{$model}Controller";
-        $requestClasName = str_replace([
+        $requestClasName = str_replace(
+            [
                 '{{model}}',
                 '{{controllerName}}',
                 '{{viewpath}}',

@@ -16,7 +16,7 @@ class {{controllerName}} extends Controller
     protected $viewPath = '{{viewpath}}';
 
     protected $permission = '{{viewpath}}';
-    
+
     protected $indexRequest = Index::class;
 
     protected $storeRequest = Store::class;
