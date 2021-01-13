@@ -341,6 +341,14 @@ trait HasCrudActions
      */
     public function bulkDestroy(): RedirectResponse
     {
+        $message = __('hascrudactions::app.global.message.fail.delete') . ' ' . ucfirst($this->permission ?? '');
+
+        if (!request()->ids) {
+            return redirect()->to($this->redirect)->with('message', [
+                'error' => Helpers::dash_to_space($message)
+            ]);
+        }
+
         if (function_exists('get_lang')) {
             get_lang();
         }
