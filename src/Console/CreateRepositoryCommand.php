@@ -48,23 +48,25 @@ class CreateRepositoryCommand extends Command
         if (!$model) {
             $model = '';
         } else {
-            $model = config('hascrudactions.model_folder') ? config('hascrudactions.model_folder').$model : 'App\\'.$model;
+            $model = config('hascrudactions.model_folder') ? config('hascrudactions.model_folder') . $model : 'App\\' . $model;
         }
         $this->createRepositoryFile($name, $model);
     }
 
     private function createRepositoryFile(string $name, string $model)
     {
-        $repositoryTemplate = str_replace([
-            '{{repositoryName}}',
-            '{{model}}'
-        ],
-        [
-            $name,
-            $model
-        ],
-        $this->getStub('Repository'));
-        if(!File::exists(app_path("Repositories"))) {
+        $repositoryTemplate = str_replace(
+            [
+                '{{repositoryName}}',
+                '{{model}}'
+            ],
+            [
+                $name,
+                $model
+            ],
+            $this->getStub('Repository')
+        );
+        if (!File::exists(app_path("Repositories"))) {
             // path does not exist
             File::makeDirectory(app_path("Repositories"), 0777, true, true);
         }

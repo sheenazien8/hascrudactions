@@ -5,7 +5,6 @@ root = true
 
 [*]
 charset = utf-8
-indent_size = 4
 indent_style = space
 end_of_line = lf
 insert_final_newline = true
@@ -13,3 +12,36 @@ trim_trailing_whitespace = true
 
 [*.md]
 trim_trailing_whitespace = false
+
+[**.js]
+indent_size = 2
+indent_style = space
+
+[**.css]
+indent_size = 2
+indent_style = space
+
+[**.scss]
+indent_size = 2
+indent_style = space
+
+[**.php]
+indent_size = 4
+indent_style = space
+
+[**.blade.php]
+indent_style = space
+indent_size = 2
+
+[**.vue]
+indent_style = space
+indent_size = 2
+
+[*.vue]
+indent_style = space
+indent_size = 2
+
+[**.json]
+indent_style = space
+indent_size = 4
+

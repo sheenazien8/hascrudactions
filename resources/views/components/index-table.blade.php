@@ -1,17 +1,35 @@
 <div>
-  @if ($withoutcard)
+  @if ($withoutCard)
     <div class="table-responsive">
+        <div class="d-flex justify-content-between">
+          <div class="py-3">
+            <h4 class="">{{ $title }}</h4>
+          </div>
+          <div class="row py-3 w-50">
+            <div class="col-md-6 text-right">
+              <a class="btn btn-primary" href="{{ route("{$resources}.create") }}"><span><svg style="width:15px;margin-right:5px; margin-bottom:2px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clip-rule="evenodd" />
+                  </svg></span>@lang('hascrudactions::app.global.create')</a>
+            </div>
+            <div class="col-md-6">
+              <select id="" class="form-control bulk-action">
+                <option value="" disabled selected>@lang('hascrudactions::app.global.action')</option>
+                <option value="bulk-destroy">@lang('hascrudactions::app.global.bulk-destroy')</option>
+              </select>
+            </div>
+          </div>
+        </div>
       <table class="table table-hover" id="{{ $resources }}-table">
         <thead>
           <tr>
-            @if (!$withoutcheckbox)
+            @if (!$withoutCheckbox)
               @include('hascrudactions::partials.table.select-all')
             @endif
             {{ $thead }}
             @if (!$withoutTime)
               <th> {{ __('hascrudactions::app.global.created_at') }}</th>
             @endif
-            @if (!$withoutbulk)
+            @if (!$withoutAction)
               <th></th>
             @endif
           </tr>
@@ -28,23 +46,38 @@
   @else
     <div class="card">
       <div class="card-header">
-          <h4 class="pt-3 pb-3">{{ $title }}</h4>
+        <div class="d-flex justify-content-between">
+          <div class="py-3">
+            <h4 class="">{{ $title }}</h4>
+          </div>
+          <div class="row py-3 w-50">
+            <div class="col-md-6 text-right">
+              <a class="btn btn-primary" href="{{ route("{$resources}.create") }}"><span><svg style="width:15px;margin-right:5px; margin-bottom:2px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clip-rule="evenodd" />
+                  </svg></span>@lang('hascrudactions::app.global.create')</a>
+            </div>
+            <div class="col-md-6">
+              <select id="" class="form-control bulk-action">
+                <option value="" disabled selected>@lang('hascrudactions::app.global.action')</option>
+                <option value="bulk-destroy">@lang('hascrudactions::app.global.bulk-destroy')</option>
+              </select>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="card-body">
         <div class="table-responsive">
           <table class="table table-hover" id="{{ $resources }}-table" width="100%">
             <thead>
               <tr>
-                <form method="POST" accept-charset="utf-8">
-                  @if (!$withoutcheckbox)
-                    @include('hascrudactions::partials.table.select-all')
-                  @endif
-                </form>
+                @if (!$withoutCheckbox)
+                  @include('hascrudactions::partials.table.select-all')
+                @endif
                 {{ $thead }}
                 @if (!$withoutTime)
                   <th> {{ __('hascrudactions::app.global.created_at') }}</th>
                 @endif
-                @if (!$withoutaction)
+                @if (!$withoutAction)
                   <th></th>
                 @endif
               </tr>
@@ -54,43 +87,51 @@
       </div>
       <div class="card-footer">
       </div>
+      <form method="POST" action="{{ route("{$resources}.bulk-destroy") }}" class="bulk-action-form">
+        @csrf
+        @method('DELETE')
+      </form>
     </div>
   @endif
 </div>
 
-@push('js')
-  {{-- @if (!$withoutaction) --}}
-  {{--   <script> --}}
-  {{--     $(() => { --}}
-  {{--       $("input.select-all").click(function(){ --}}
-  {{--         $('input:checkbox').not(this).prop('checked', this.checked); --}}
-  {{--       }); --}}
-  {{--       $('#{{ $resources }}-table').on('change', 'input:checkbox', function(event) { --}}
-  {{--         console.log(event.target) --}}
-  {{--       }) --}}
-  {{--       $('.bulk-action').on('click', function(ev) { --}}
-  {{--         let checkbox = $('#{{ $resources }}-table input:checkbox'); --}}
-  {{--         let array = [] --}}
-  {{--         for(let a = 0; a < checkbox.length; a++) { --}}
-  {{--           if($(checkbox[a]).attr('class') != 'select-all') { --}}
-  {{--             let checked = $(checkbox[a]).prop('checked'); --}}
-  {{--             if(checked) { --}}
-  {{--               array.push($(checkbox[a]).val()) --}}
-  {{--             } --}}
-  {{--           } --}}
-  {{--         } --}}
-  {{--         let url = '{{ route($resources.'.bulk-destroy') }}'; --}}
-  {{--         let token = $('meta[name="csrf-token"]'); --}}
-  {{--         $.ajax({ --}}
-  {{--           url: url, --}}
-  {{--           method: 'DELETE', --}}
-  {{--           data: { --}}
-  {{--             _token: $(token[0]).attr('content') --}}
-  {{--           } --}}
-  {{--         }) --}}
-  {{--       }) --}}
-  {{--     }) --}}
-  {{--   </script> --}}
-  {{-- @endif --}}
+@push(config('hascrudactions.wrapper.javascript'))
+  @if (!$withoutAction)
+    <script>
+      $(() => {
+        let checked = $('input.select-all').prop('checked');
+        $('#{{ $resources }}-table').on('change', 'input.select-all', function(event) {
+          $('input:checkbox').not(this).prop('checked', this.checked);
+        })
+
+        $('#{{ $resources }}-table').on('change', 'input:checkbox', function(event) {
+          if(event.target.classList[0] == 'select-row') {
+            $('input.select-all').prop('checked', false);
+          }
+        })
+
+        $('.bulk-action').on('change', function(ev) {
+          let question = confirm('{{ trans('hascrudactions::app.global.suredelete') }}')
+          if(question) {
+            let checkbox = $('#{{ $resources }}-table input:checkbox');
+            let input = '';
+            let bulkActionForm = $('.bulk-action-form')
+            for(let a = 0; a < checkbox.length; a++) {
+              if($(checkbox[a]).attr('class') != 'select-all'){
+                let checked = $(checkbox[a]).prop('checked');
+                if(checked){
+                  input += `<input type="hidden" name="ids[]" value="${$(checkbox[a]).attr('value')}">`
+                }
+              }
+            }
+            bulkActionForm.append(input);
+            bulkActionForm.submit();
+          } else {
+            $('.bulk-action').val("")
+          }
+        })
+      })
+    </script>
+  @endif
 @endpush
 

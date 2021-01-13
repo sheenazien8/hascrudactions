@@ -21,7 +21,7 @@ interface Repository
 
     public function create(Request $request): Model;
 
-    public function update(Request $request, $model): Model;
+    public function update(Request $request, Model $model): Model;
 
     public function delete(int $id): bool;
 
@@ -33,7 +33,7 @@ interface Repository
 
     public function findByKeyArray(array $key, string $id = "id"): Collection;
 
-    public function getObjectModel(): Model;
+    public function getObjectModel(array $data = null): Model;
 
     public function query(): Builder;
 }

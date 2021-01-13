@@ -1,7 +1,7 @@
 @extends(config('hascrudactions.wrapper.layouts'))
 
 @section(config('hascrudactions.wrapper.section'))
-  {{content}}
+    {{-- Your Detail In Here --}}
 @endsection
 
 @push(config('hascrudactions.wrapper.javascript'))

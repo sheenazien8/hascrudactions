@@ -15,7 +15,7 @@ class {{controllerName}} extends Controller
 
     protected $viewPath = '{{viewpath}}';
 
-    protected $permission = 'category';
+    protected $permission = '{{viewpath}}';
 
     protected $indexRequest = Index::class;
 

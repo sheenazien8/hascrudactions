@@ -37,6 +37,11 @@ abstract class LaTable extends DataTable implements Responsable
         return $this->newTable();
     }
 
+    /**
+     * render the table
+     *
+     * @return DataTable
+     */
     public function newTable()
     {
         return datatables($this->query)
@@ -54,7 +59,8 @@ abstract class LaTable extends DataTable implements Responsable
                 $resources = explode('.', request()->route()->action['as'])[0];
                 return view('hascrudactions::partials.table.action', [
                     'delete' => route("{$resources}.destroy", $model->id),
-                    'model' => $model
+                    'model' => $model,
+                    'resources' => $resources
                 ]);
             })
             ->rawColumns(array_merge($this->defaultRawColumns, $this->rawColumns));

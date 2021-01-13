@@ -165,7 +165,7 @@ trait HasCrudActions
         } else {
             $data = $this->repository->create($request);
         }
-        $message = __('hascrudactions::app.global.message.create') . ' ' . ucfirst($this->permission ?? '');
+        $message = __('hascrudactions::app.global.message.success.create') . ' ' . ucfirst($this->permission ?? '');
 
         /* if (method_exists($data, 'logs')) { */
         /*     Activity::modelable($data)->auth()->creating(); */
@@ -175,9 +175,9 @@ trait HasCrudActions
             return Response::success($data);
         }
 
-        return redirect()->to($this->redirect)->with([
-            'message' => 'success'
-        ], Helpers::dash_to_space($message));
+        return redirect()->to($this->redirect)->with('message', [
+            'success' => Helpers::dash_to_space($message)
+        ]);
     }
 
     /**
@@ -291,7 +291,7 @@ trait HasCrudActions
             $data = $this->repository->update($request, $data);
         }
 
-        $message = __('hascrudactions::app.global.message.update') . ' ' . ucfirst($this->permission ?? '');
+        $message = __('hascrudactions::app.global.message.success.update') . ' ' . ucfirst($this->permission ?? '');
 
         if (isset($this->return) && $this->return == 'api') {
             return response()->json($data, 200);
@@ -301,9 +301,9 @@ trait HasCrudActions
         /*     Activity::modelable($data)->auth()->updating(); */
         /* } */
 
-        return redirect()->to($this->redirect)->with([
-            'message' => 'success'
-        ], Helpers::dash_to_space($message));
+        return redirect()->to($this->redirect)->with('message', [
+            'success' => Helpers::dash_to_space($message)
+        ]);
     }
 
     /**
@@ -326,12 +326,12 @@ trait HasCrudActions
 
         $data->delete();
 
-        $message = __('hascrudactions::app.global.message.delete') . ' ' . ucfirst($this->permission ?? '');
+        $message = __('hascrudactions::app.global.message.success.delete') . ' ' . ucfirst($this->permission ?? '');
 
 
-        return redirect()->to($this->redirect)->with([
-            'message' => 'success'
-        ], Helpers::dash_to_space($message));
+        return redirect()->to($this->redirect)->with('message', [
+            'success' => Helpers::dash_to_space($message)
+        ]);
     }
 
     /**
@@ -345,15 +345,19 @@ trait HasCrudActions
             get_lang();
         }
 
-        $request = resolve($this->bulkDestroyRequest);
+        if (isset($this->permission)) {
+            $this->authorize("create-$this->permission");
+        }
 
-        $this->repository->bulkDestroy($request);
+        /* $request = resolve($this->bulkDestroyRequest); */
 
-        $message = __('hascrudactions::app.global.message.delete') . ' ' . ucfirst($this->permission);
+        $this->repository->bulkDestroy(request());
 
-        return redirect()->back()->with([
-            'message' => 'success'
-        ], Helpers::dash_to_space($message));
+        $message = __('hascrudactions::app.global.message.success.delete') . ' ' . ucfirst($this->permission ?? '');
+
+        return redirect()->to($this->redirect)->with('message', [
+            'success' => Helpers::dash_to_space($message)
+        ]);
     }
 
     public function downloadTemplate()
