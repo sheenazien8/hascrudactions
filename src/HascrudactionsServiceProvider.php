@@ -7,6 +7,7 @@ use Sheenazien8\Hascrudactions\Console\CreateHascruActionCommand;
 use Sheenazien8\Hascrudactions\Console\CreateRepositoryCommand;
 use Sheenazien8\Hascrudactions\Console\CreateViewCommand;
 use Sheenazien8\Hascrudactions\Console\InstallCommand;
+use Sheenazien8\Hascrudactions\Helpers\Response;
 use Sheenazien8\Hascrudactions\Traits\InjectBladeResolve;
 use Sheenazien8\Hascrudactions\Views\Components\Button;
 use Sheenazien8\Hascrudactions\Views\Components\Form;
@@ -15,6 +16,14 @@ use Sheenazien8\Hascrudactions\Views\Components\IndexTable;
 class HascrudactionsServiceProvider extends ServiceProvider
 {
     use InjectBladeResolve;
+
+    /**
+     * @var string[] $providers
+     */
+    protected $providers = [
+        RouteServiceProvider::class
+    ];
+
     /**
      * Bootstrap the application services.
      */
@@ -23,11 +32,9 @@ class HascrudactionsServiceProvider extends ServiceProvider
         /*
          * Optional methods to load your package assets
          */
-        // $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'hascrudactions');
         $this->loadViewsFrom(__DIR__ . '/../resources/views', 'hascrudactions');
         $this->loadTranslationsFrom(__DIR__ . '/../resources/lang', 'hascrudactions');
-        // $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
-        // $this->loadRoutesFrom(__DIR__.'/routes.php');
+
         $this->loadViewComponentsAs('components', [
             'index-table' => IndexTable::class,
             'form' => Form::class,
@@ -62,6 +69,9 @@ class HascrudactionsServiceProvider extends ServiceProvider
                 CreateViewCommand::class,
             ]);
         }
+        $this->app->bind('ResponseHelper', function () {
+            return new Response();
+        });
     }
 
     /**
@@ -69,6 +79,7 @@ class HascrudactionsServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        $this->registerProviders();
         // Automatically apply the package configuration
         $this->mergeConfigFrom(__DIR__ . '/../config/config.php', 'hascrudactions');
 
@@ -76,5 +87,16 @@ class HascrudactionsServiceProvider extends ServiceProvider
         $this->app->singleton('hascrudactions', function () {
             return new Hascrudactions;
         });
+    }
+    /**
+     * Registers the package service providers.
+     *
+     * @return void
+     */
+    private function registerProviders()
+    {
+        foreach ($this->providers as $provider) {
+            $this->app->register($provider);
+        }
     }
 }

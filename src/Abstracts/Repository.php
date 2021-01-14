@@ -33,7 +33,7 @@ abstract class Repository implements RepositoryInterface
      */
     public function datatable(Request $request): LaTable
     {
-        $items = $this->query()->latest()->get();
+        $items = $this->query()->latest();
 
         return $this->getObjectModel()->table($items);
     }

@@ -4,18 +4,17 @@ namespace Sheenazien8\Hascrudactions\Traits;
 
 use Sheenazien8\Hascrudactions\Exceptions\ServiceActionsException;
 use Sheenazien8\Hascrudactions\Facades\Response;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
 use Maatwebsite\Excel\Facades\Excel;
-use Sheenazien8\Hascrudactions\Helpers;
+use Sheenazien8\Hascrudactions\Helpers\StrHelper;
 
 /**
  * Trait HasCrudActions
  * @author sheenazien
  */
-trait HasCrudActions
+trait HasCrudAction
 {
     protected $repository;
     /**
@@ -64,34 +63,13 @@ trait HasCrudActions
                 if (isset($this->return) && $this->return == 'index') {
                     return;
                 }
-                if ($request->type == 'select2') {
-                    $result = $this->repository->query()->select('id', $request->key)->when(
-                        $request->term && $request->key,
-                        function ($query) use ($request) {
-                            return $query->where($request->key, 'LIKE', '%%' . $request->term . '%%');
-                        }
-                    )->when(
-                        $request->oldValue,
-                        function ($query) use ($request) {
-                            $str = ltrim($request->oldValue, '[');
-                            $str = rtrim($str, ']');
-                            $array = explode(',', $str);
-                            if ($request->oldValue) {
-                                if (is_array($array) && count($array) > 1) {
-                                    return $query->whereIn('id', $array);
-                                }
-                                return $query->where('id', $request->oldValue);
-                            }
-                        }
-                    )->when($request->filter, function ($query) use ($request) {
-                        return $query->where($request->filter['key'], $request->filter['value']);
-                    })->get()->toArray();
-
-                    return Response::success($result);
-                }
 
                 if (isset($this->return) && $this->return == 'api') {
-                    $result = $this->repository->query()->get()->toArray();
+                    if ($request->paging) {
+                        $result = $this->repository->paginate($request, ['*'], '')->toArray();
+                    } else {
+                        $result = $this->repository->get($request, ['*'], '')->toArray();
+                    }
 
                     return Response::success($result);
                 }
@@ -172,21 +150,21 @@ trait HasCrudActions
         /* } */
 
         if (isset($this->return) && $this->return == 'api') {
-            return Response::success($data);
+            return Response::success($data->toArray());
         }
 
         return redirect()->to($this->redirect)->with('message', [
-            'success' => Helpers::dash_to_space($message)
+            'success' => StrHelper::dash_to_space($message)
         ]);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int $model
+     * @param  string|int $model
      * @return mix
      */
-    public function show(int $model)
+    public function show($model)
     {
         if (function_exists('get_lang')) {
             get_lang();
@@ -234,10 +212,10 @@ trait HasCrudActions
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int $model
+     * @param  string|int $model
      * @return \Illuminate\View\View
      */
-    public function edit(int $model)
+    public function edit($model)
     {
         if (function_exists('get_lang')) {
             get_lang();
@@ -262,10 +240,10 @@ trait HasCrudActions
     /**
      * Update the specified resource in storage.
      *
-     * @param  int $model
-     * @return \Illuminate\Http\RedirectResponse
+     * @param  string|int $model
+     * @return \Illuminate\Http\RedirectResponse | \Illuminate\Http\JsonResponse
      */
-    public function update(int $model): RedirectResponse
+    public function update($model)
     {
         if (function_exists('get_lang')) {
             get_lang();
@@ -294,7 +272,7 @@ trait HasCrudActions
         $message = __('hascrudactions::app.global.message.success.update') . ' ' . ucfirst($this->permission ?? '');
 
         if (isset($this->return) && $this->return == 'api') {
-            return response()->json($data, 200);
+            return Response::success($data->toArray());
         }
 
         /* if (method_exists($data, 'logs')) { */
@@ -302,17 +280,17 @@ trait HasCrudActions
         /* } */
 
         return redirect()->to($this->redirect)->with('message', [
-            'success' => Helpers::dash_to_space($message)
+            'success' => StrHelper::dash_to_space($message)
         ]);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int $model
+     * @param  string|int $model
      * @return \Illuminate\Http\Response
      */
-    public function destroy(int $model): RedirectResponse
+    public function destroy($model)
     {
         if (function_exists('get_lang')) {
             get_lang();
@@ -328,24 +306,30 @@ trait HasCrudActions
 
         $message = __('hascrudactions::app.global.message.success.delete') . ' ' . ucfirst($this->permission ?? '');
 
+        if (isset($this->return) && $this->return == 'api') {
+            return Response::success([
+                'id' => $model,
+                'message' => $message
+            ]);
+        }
 
         return redirect()->to($this->redirect)->with('message', [
-            'success' => Helpers::dash_to_space($message)
+            'success' => StrHelper::dash_to_space($message)
         ]);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @return Illuminate\Http\RedirectResponse
+     * @return Illuminate\Http\Response
      */
-    public function bulkDestroy(): RedirectResponse
+    public function bulkDestroy()
     {
         $message = __('hascrudactions::app.global.message.fail.delete') . ' ' . ucfirst($this->permission ?? '');
 
         if (!request()->ids) {
             return redirect()->to($this->redirect)->with('message', [
-                'error' => Helpers::dash_to_space($message)
+                'error' => StrHelper::dash_to_space($message)
             ]);
         }
 
@@ -363,8 +347,15 @@ trait HasCrudActions
 
         $message = __('hascrudactions::app.global.message.success.delete') . ' ' . ucfirst($this->permission ?? '');
 
+        if (isset($this->return) && $this->return == 'api') {
+            return Response::success([
+                'id' => request()->ids,
+                'message' => $message
+            ]);
+        }
+
         return redirect()->to($this->redirect)->with('message', [
-            'success' => Helpers::dash_to_space($message)
+            'success' => StrHelper::dash_to_space($message)
         ]);
     }
 
