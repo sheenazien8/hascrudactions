@@ -48,16 +48,20 @@ class CreateHascruActionCommand extends Command
             $model = $this->argument('model');
             $viewPath = Str::lower($model);
             $repositoryClass = "{$model}Repository";
-            if (!File::exists(app_path("Http/Requests/{$model}"))) {
-                // path does not exist
-                File::makeDirectory(app_path("Http/Requests/{$model}"), 0777, true, true);
-                $this->generateRequest($model);
-            } else {
-                $this->generateRequest($model);
+            if (function_exists('config_path')) {
+                if (!File::exists(app_path("Http/Requests/{$model}"))) {
+                    // path does not exist
+                    File::makeDirectory(app_path("Http/Requests/{$model}"), 0777, true, true);
+                    $this->generateRequest($model);
+                } else {
+                    $this->generateRequest($model);
+                }
             }
             $this->generateRepository($repositoryClass, $model);
             $this->createController($model, $viewPath, $repositoryClass);
-            $this->generateView($model);
+            if (function_exists('config_path')) {
+                $this->generateView($model);
+            }
         } catch (\Exception $e) {
             Log::error($e->getMessage());
         }
@@ -108,7 +112,7 @@ class CreateHascruActionCommand extends Command
                 $viewPath,
                 $repositoryClass,
             ],
-            $this->getStub('HasCrudAction')
+            function_exists('config_path') ? $this->getStub('HasCrudAction') : $this->getStub('LumenHasCrudAction')
         );
         file_put_contents(app_path("Http/Controllers/{$controllerName}.php"), $requestClasName);
         $this->info("Controller $controllerName is created");

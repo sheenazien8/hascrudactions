@@ -2,6 +2,7 @@
 
 namespace Sheenazien8\Hascrudactions;
 
+use Illuminate\Routing\Route;
 use Illuminate\Support\ServiceProvider;
 use Sheenazien8\Hascrudactions\Console\CreateHascruActionCommand;
 use Sheenazien8\Hascrudactions\Console\CreateRepositoryCommand;
@@ -42,33 +43,40 @@ class HascrudactionsServiceProvider extends ServiceProvider
         ]);
 
         if ($this->app->runningInConsole()) {
-            $this->publishes([
-                __DIR__ . '/../config/config.php' => config_path('hascrudactions.php'),
-            ], 'config');
+            if (function_exists('config_path')) {
+                $this->publishes([
+                    __DIR__ . '/../config/config.php' => config_path('hascrudactions.php'),
+                ], 'config');
+            }
 
             // Publishing the views.
             $this->publishes([
                 __DIR__ . '/../resources/views' => resource_path('views/vendor/hascrudactions'),
             ], 'views');
 
-            // Publishing assets.
-            /*$this->publishes([
-                __DIR__.'/../resources/assets' => public_path('vendor/hascrudactions'),
-            ], 'assets');*/
-
             // Publishing the translation files.
-            /*$this->publishes([
-                __DIR__.'/../resources/lang' => resource_path('lang/vendor/hascrudactions'),
-            ], 'lang');*/
+            $this->publishes([
+                __DIR__ . '/../resources/lang' => resource_path('lang/vendor/hascrudactions'),
+            ], 'lang');
 
             // Registering package commands.
-            $this->commands([
-                CreateRepositoryCommand::class,
-                CreateHascruActionCommand::class,
-                InstallCommand::class,
-                CreateViewCommand::class,
-            ]);
+
+            if (function_exists('config_path')) {
+                $this->commands([
+                    CreateRepositoryCommand::class,
+                    CreateHascruActionCommand::class,
+                    InstallCommand::class,
+                    CreateViewCommand::class,
+                ]);
+            } else {
+                $this->commands([
+                    CreateHascruActionCommand::class,
+                    CreateRepositoryCommand::class,
+                    InstallCommand::class,
+                ]);
+            }
         }
+
         $this->app->bind('ResponseHelper', function () {
             return new Response();
         });
@@ -95,6 +103,10 @@ class HascrudactionsServiceProvider extends ServiceProvider
      */
     private function registerProviders()
     {
+        if (!method_exists(Route::class, 'macro')) { // Lumen
+            return;
+        }
+
         foreach ($this->providers as $provider) {
             $this->app->register($provider);
         }

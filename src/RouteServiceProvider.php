@@ -6,7 +6,6 @@ use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvi
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Route;
 
-
 /**
  * Class RouteServiceProvider
  * @author yourname
@@ -31,7 +30,8 @@ class RouteServiceProvider extends ServiceProvider
      */
     private function registerMacros()
     {
-        Route::macro('hascrud', function ($slug, $options = [], $resource_options = [], $resource = true) {
+        Route::macro('hascrud', function ($slug, $controllerClass = null,  $options = [], $resource_options = [], $resource = true) {
+            /* dd($controllerClass, $slug, $options); */
             $slugs = explode('.', $slug);
             $prefixSlug = str_replace('.', "/", $slug);
             $className = implode("", array_map(function ($s) {
@@ -73,6 +73,9 @@ class RouteServiceProvider extends ServiceProvider
             foreach ($customRoutes as $route) {
                 $routeSlug = "{$route}/{$prefixSlug}";
                 $mapping = ['as' => $customRoutePrefix . ".{$route}", 'uses' => "{$className}Controller@{$route}"];
+                if ($controllerClass) {
+                    $mapping = ['as' => $customRoutePrefix . ".{$route}", 'uses' => "{$controllerClass}@{$route}"];
+                }
 
                 if (in_array($route, ['bulkDestroy'])) {
                     Route::delete($routeSlug, $mapping);
@@ -80,8 +83,13 @@ class RouteServiceProvider extends ServiceProvider
             }
 
             if ($resource) {
-                Route::group(['as' => $resourceCustomGroupPrefix], function () use ($slug, $className, $resource_options) {
-                    Route::resource($slug, "{$className}Controller", $resource_options);
+                Route::group(['as' => $resourceCustomGroupPrefix], function () use ($slug, $className, $resource_options, $controllerClass) {
+                    if ($controllerClass) {
+                        $controller = $controllerClass;
+                    } else {
+                        $controller = "{$className}Controller";
+                    }
+                    Route::resource($slug, $controller, $resource_options);
                 });
             }
         });

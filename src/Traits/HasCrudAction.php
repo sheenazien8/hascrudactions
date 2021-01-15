@@ -17,6 +17,12 @@ use Sheenazien8\Hascrudactions\Helpers\StrHelper;
 trait HasCrudAction
 {
     protected $repository;
+
+    /**
+     *  available return method
+     */
+    private $RETURN = ['json', 'index', 'view'];
+
     /**
      * @param repository
      */
@@ -36,7 +42,10 @@ trait HasCrudAction
             get_lang();
         }
 
-        $request = resolve($this->indexRequest);
+        $request = request();
+        if (app_is('laravel')) {
+            $request = resolve($this->indexRequest);
+        }
 
         if (isset($this->permission)) {
             if ($this->permission && $request->type != 'select2') {
@@ -126,7 +135,10 @@ trait HasCrudAction
             get_lang();
         }
 
-        $request = resolve($this->storeRequest);
+        $request = request();
+        if (app_is('laravel')) {
+            $request = resolve($this->storeRequest);
+        }
 
         if (isset($this->permission)) {
             $this->authorize("create-$this->permission");
@@ -225,6 +237,7 @@ trait HasCrudAction
         if (isset($this->permission)) {
             $this->authorize("update-{$this->permission}");
         }
+
         $resources = $this->permission ?? $this->redirect;
 
         if (isset($this->resources)) {
@@ -251,7 +264,10 @@ trait HasCrudAction
 
         $data = $this->repository->find($model);
 
-        $request = resolve($this->updateRequest);
+        $request = request();
+        if (app_is('laravel')) {
+            $request = resolve($this->updateRequest);
+        }
 
         if (isset($this->permission)) {
             $this->authorize("update-{$this->permission}");
