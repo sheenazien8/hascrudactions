@@ -23,7 +23,7 @@ This package allows you to build a CRUD with tiny Controller and keep the patter
 
 
 ## Requirements
-This package uses yajra/laravel-datatables (https://yajrabox.com/docs/laravel-datatables/master) for index table view under the hood, Please make sure you include this dependencies before using this library.
+This package uses ```yajra/laravel-datatables``` (https://yajrabox.com/docs/laravel-datatables/master) for index table view under the hood, Please make sure you include this dependencies before using this library.
 
 ## Installation
 
@@ -35,7 +35,7 @@ composer require sheenazien8/hascrudactions
 ## Configuration
 #### Laravel Configuration
 ```bash
-php artisan vendor:publish --provider="App\Providers\HascrudactionsServiceProvider"
+php artisan vendor:publish --provider="Sheenazien8\Hascrudactions\HascrudactionsServiceProvider"
 ```
 #### Lumen Configuration
 ```bash
