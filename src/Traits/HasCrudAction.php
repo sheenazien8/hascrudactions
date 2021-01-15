@@ -44,7 +44,9 @@ trait HasCrudAction
 
         $request = request();
         if (app_is('laravel')) {
-            $request = resolve($this->indexRequest);
+            if (isset($this->indexRequest)) {
+                $request = resolve($this->indexRequest);
+            }
         }
 
         if (isset($this->permission)) {
@@ -137,7 +139,13 @@ trait HasCrudAction
 
         $request = request();
         if (app_is('laravel')) {
-            $request = resolve($this->storeRequest);
+            if (isset($this->storeRequest)) {
+                $request = resolve($this->storeRequest);
+            }
+        }
+
+        if (isset($this->rules)) {
+            $this->validate($request, $this->rules);
         }
 
         if (isset($this->permission)) {
@@ -266,7 +274,13 @@ trait HasCrudAction
 
         $request = request();
         if (app_is('laravel')) {
-            $request = resolve($this->updateRequest);
+            if (isset($this->updateRequest)) {
+                $request = resolve($this->updateRequest);
+            }
+        }
+
+        if (isset($this->rules)) {
+            $this->validate($request, $this->rules);
         }
 
         if (isset($this->permission)) {
@@ -357,9 +371,14 @@ trait HasCrudAction
             $this->authorize("create-$this->permission");
         }
 
-        /* $request = resolve($this->bulkDestroyRequest); */
+        $request = request();
+        if (app_is('laravel')) {
+            if (isset($this->bulkDestroyRequest)) {
+                $request = resolve($this->bulkDestroyRequest);
+            }
+        }
 
-        $this->repository->bulkDestroy(request());
+        $this->repository->bulkDestroy($request);
 
         $message = __('hascrudactions::app.global.message.success.delete') . ' ' . ucfirst($this->permission ?? '');
 

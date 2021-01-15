@@ -87,9 +87,10 @@ if (!function_exists('config_path')) {
      */
     function hascrud($path, $controller = null, $options = [], $resource_options = [], $resource = true)
     {
+        dd('ok');
         global $app;
         $slugs = explode('.', $path);
-        $prefixSlug = str_replace('.', "/", $path);
+        /* $prefixSlug = str_replace('.', "/", $path); */
         $className = implode("", array_map(function ($s) {
             return ucfirst(Str::singular($s));
         }, $slugs));
@@ -138,6 +139,11 @@ if (!function_exists('config_path')) {
             foreach ($restfulMethods as $restItem) {
                 if (isset($options['only'])) {
                     if (!in_array($restItem['name'], $options['only'])) {
+                        continue;
+                    }
+                }
+                if (isset($options['except'])) {
+                    if (in_array($restItem['name'], $options['except'])) {
                         continue;
                     }
                 }
