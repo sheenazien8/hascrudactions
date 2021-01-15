@@ -19,7 +19,7 @@ This package allows you to build a CRUD with tiny Controller and keep the patter
 | GET          | base_domain/path/{id}           | ControllerClass@edit        | -----                       | path.edit    |
 | PUT          | base_domain/path/{id}           | ControllerClass@update      | RepositoryClass@update      | path.update  |
 | DELETE       | base_domain/path/{id}           | ControllerClass@destroy     | RepositoryClass@delete      | path.destroy |
-| DELETE       | base_domain/bulkDeletepath/path | ControllerClass@bulkDestroy | RepositoryClass@bulkDestroy | path.destroy |
+| DELETE       | base_domain/bulkDeletepath/path | ControllerClass@bulkDestroy | RepositoryClass@bulkDestroy | path.bulkDestroy |
 
 
 ## Requirements
