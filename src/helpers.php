@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Routing\Route;
 use Illuminate\Support\Str;
 
 if (!function_exists('dash_to_space')) {
