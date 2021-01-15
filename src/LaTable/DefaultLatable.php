@@ -10,5 +10,5 @@ use Sheenazien8\Hascrudactions\Abstracts\LaTable;
  */
 class DefaultLatable extends LaTable
 {
+    // overide newTable method for use custome column
 }
-
