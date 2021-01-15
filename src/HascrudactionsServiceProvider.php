@@ -5,6 +5,7 @@ namespace Sheenazien8\Hascrudactions;
 use Illuminate\Routing\Route;
 use Illuminate\Support\ServiceProvider;
 use Sheenazien8\Hascrudactions\Console\CreateHascruActionCommand;
+use Sheenazien8\Hascrudactions\Console\CreateLatableCommand;
 use Sheenazien8\Hascrudactions\Console\CreateRepositoryCommand;
 use Sheenazien8\Hascrudactions\Console\CreateViewCommand;
 use Sheenazien8\Hascrudactions\Console\InstallCommand;
@@ -67,6 +68,7 @@ class HascrudactionsServiceProvider extends ServiceProvider
                     CreateHascruActionCommand::class,
                     InstallCommand::class,
                     CreateViewCommand::class,
+                    CreateLatableCommand::class,
                 ]);
             } else {
                 $this->commands([
@@ -90,11 +92,6 @@ class HascrudactionsServiceProvider extends ServiceProvider
         $this->registerProviders();
         // Automatically apply the package configuration
         $this->mergeConfigFrom(__DIR__ . '/../config/config.php', 'hascrudactions');
-
-        // Register the main class to use with the facade
-        $this->app->singleton('hascrudactions', function () {
-            return new Hascrudactions;
-        });
     }
     /**
      * Registers the package service providers.
