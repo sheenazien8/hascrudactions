@@ -87,7 +87,7 @@
       </div>
       <div class="card-footer">
       </div>
-      <form method="POST" action="{{ route("{$resources}.bulk-destroy") }}" class="bulk-action-form">
+      <form method="POST" action="{{ route("{$resources}.bulkDestroy") }}" class="bulk-action-form">
         @csrf
         @method('DELETE')
       </form>

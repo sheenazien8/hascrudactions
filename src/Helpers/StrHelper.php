@@ -1,6 +1,6 @@
 <?php
 
-namespace Sheenazien8\Hascrudactions;
+namespace Sheenazien8\Hascrudactions\Helpers;
 
 use Illuminate\Support\Str;
 
@@ -9,7 +9,7 @@ use Illuminate\Support\Str;
  * Class Helpers
  * @author sheenazien8
  */
-class Helpers
+class StrHelper
 {
     public static function dash_to_space(string $string, bool $capital = false)
 

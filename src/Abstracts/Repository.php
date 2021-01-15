@@ -33,7 +33,7 @@ abstract class Repository implements RepositoryInterface
      */
     public function datatable(Request $request): LaTable
     {
-        $items = $this->query()->latest()->get();
+        $items = $this->query()->latest();
 
         return $this->getObjectModel()->table($items);
     }
@@ -187,6 +187,9 @@ abstract class Repository implements RepositoryInterface
     public function bulkDestroy(Request $request, string $column = 'id'): void
     {
         $self = $this;
+        if ($self->query()->find($request->ids)->count() == 0) {
+            abort(404);
+        }
         DB::transaction(static function () use ($request, $self, $column) {
             collect($request->ids)
                 ->chunk(1000)

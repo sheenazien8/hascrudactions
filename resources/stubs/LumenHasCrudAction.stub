@@ -1,0 +1,16 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Repositories\{{repositoryClass}};
+use Sheenazien8\Hascrudactions\Traits\HasCrudAction;
+
+class {{controllerName}} extends Controller
+{
+    use HasCrudAction;
+
+    protected $repositoryClass = {{repositoryClass}}::class;
+
+    protected $return = 'api';
+}
+

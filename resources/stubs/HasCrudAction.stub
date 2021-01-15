@@ -7,11 +7,11 @@ use App\Http\Requests\{{model}}\Index;
 use App\Http\Requests\{{model}}\Store;
 use App\Http\Requests\{{model}}\Update;
 use App\Repositories\{{repositoryClass}};
-use Sheenazien8\Hascrudactions\Traits\HasCrudActions;
+use Sheenazien8\Hascrudactions\Traits\HasCrudAction;
 
 class {{controllerName}} extends Controller
 {
-    use HasCrudActions;
+    use HasCrudAction;
 
     protected $viewPath = '{{viewpath}}';
 
