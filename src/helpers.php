@@ -129,14 +129,14 @@ if (!function_exists('config_path')) {
              */
             $restfulMethods = [
                 g('get', 'index'),
-                g('get', 'show', '/{id:\d+}'),
+                g('get', 'show', '/{model:\d+}'),
                 g('post', 'store'),
                 g('put', 'update', '/{id}'),
                 g('delete', 'destroy', '/{id}'),
             ];
 
             foreach ($restfulMethods as $restItem) {
-                if (isset($resource_options['only'])) {
+                if (isset($options['only'])) {
                     if (!in_array($restItem['name'], $options['only'])) {
                         continue;
                     }
