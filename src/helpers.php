@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Routing\Route;
 use Illuminate\Support\Str;
 
 if (!function_exists('dash_to_space')) {
@@ -82,12 +83,12 @@ if (!function_exists('config_path')) {
      *
      * @param string $path
      * @param string|array $controller
-     * @param string $name
-     * @param array $exclude
+     * @param array $options
+     * @param array $resource_options
+     * @param bool $resource
      */
     function hascrud($path, $controller = null, $options = [], $resource_options = [], $resource = true)
     {
-        dd('ok');
         global $app;
         $slugs = explode('.', $path);
         /* $prefixSlug = str_replace('.', "/", $path); */

@@ -145,7 +145,12 @@ trait HasCrudAction
         }
 
         if (isset($this->rules)) {
-            $this->validate($request, $this->rules);
+            if (is_array($this->rules)) {
+                $this->validate($request, $this->rules);
+            }
+            if (is_string($this->rules)) {
+                $request = resolve($this->rules);
+            }
         }
 
         if (isset($this->permission)) {
@@ -276,6 +281,15 @@ trait HasCrudAction
         if (app_is('laravel')) {
             if (isset($this->updateRequest)) {
                 $request = resolve($this->updateRequest);
+            }
+        }
+
+        if (isset($this->rules)) {
+            if (is_array($this->rules)) {
+                $this->validate($request, $this->rules);
+            }
+            if (is_string($this->rules)) {
+                $request = resolve($this->rules);
             }
         }
 
