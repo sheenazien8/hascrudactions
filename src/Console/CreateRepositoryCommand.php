@@ -5,11 +5,11 @@ namespace Sheenazien8\Hascrudactions\Console;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
 use Sheenazien8\Hascrudactions\Traits\GetStubTrait;
-use Str;
 
 class CreateRepositoryCommand extends Command
 {
     use GetStubTrait;
+
     /**
      * The name and signature of the console command.
      *

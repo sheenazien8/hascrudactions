@@ -1,0 +1,43 @@
+<?php
+
+namespace Sheenazien8\Hascrudactions\LaTable{{NameSpace}};
+
+use Carbon\Carbon;
+use Sheenazien8\Hascrudactions\Abstracts\LaTable;
+
+/**
+ * Class DefaultLatable
+ * @author sheenazien8
+ */
+class {{LaTableClassName}} extends LaTable
+{
+    /**
+     * render the table
+     *
+     * @return DataTable
+     */
+    public function newTable()
+    {
+        return datatables($this->query)
+            ->addColumn('checkbox', function ($model) {
+                return view('hascrudactions::partials.table.checkbox', compact('model'));
+            })
+            ->addColumn('created_at', function ($model) {
+                $date = (new Carbon($model->created_at))->diffForHumans();
+                return view('hascrudactions::partials.table.date')->with('date', $date);
+            })
+            ->setRowId(function ($model) {
+                return $model->id;
+            })
+            ->addColumn('action', function ($model) {
+                $resources = explode('.', request()->route()->action['as'])[0];
+                return view('hascrudactions::partials.table.action', [
+                    'delete' => route("{$resources}.destroy", $model->id),
+                    'model' => $model,
+                    'resources' => $resources
+                ]);
+            })
+            ->rawColumns(array_merge($this->defaultRawColumns, $this->rawColumns));
+    }
+}
+
