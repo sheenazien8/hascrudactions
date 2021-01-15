@@ -78,20 +78,21 @@ if (!function_exists('app_is')) {
 if (!function_exists('config_path')) {
 
     /**
-     * Create a rest Resource route
+     * Create a rest hascrud route
      *
      * @param string $path
      * @param string|array $controller
      * @param string $name
      * @param array $exclude
      */
-    function hascrud($path, $controller, $options = [], $resource_options = [], $resource = true)
+    function hascrud($path, $controller = null, $options = [], $resource_options = [], $resource = true)
     {
         global $app;
-
-        if (!isset($name)) {
-            $name = $path;
-        }
+        $slugs = explode('.', $path);
+        $prefixSlug = str_replace('.', "/", $path);
+        $className = implode("", array_map(function ($s) {
+            return ucfirst(Str::singular($s));
+        }, $slugs));
 
         /**
          * get method items
@@ -114,6 +115,8 @@ if (!function_exists('config_path')) {
             $mapping = ['as' => $path . ".{$route}", 'uses' => "{$path}Controller@{$route}"];
             if ($controller) {
                 $mapping = ['as' => $path . ".{$route}", 'uses' => "{$controller}@{$route}"];
+            } else {
+                $mapping = ['as' => $path . ".{$route}", 'uses' => "{$className}Controller@{$route}"];
             }
 
             if (in_array($route, ['bulkDestroy'])) {
@@ -134,12 +137,16 @@ if (!function_exists('config_path')) {
 
             foreach ($restfulMethods as $restItem) {
                 if (isset($resource_options['only'])) {
-                    if (!in_array($restItem['name'], $resource_options['only'])) {
+                    if (!in_array($restItem['name'], $options['only'])) {
                         continue;
                     }
                 }
 
-                $action = $controller . '@' . $restItem['name'];
+                if ($controller) {
+                    $action = $controller . '@' . $restItem['name'];
+                } else {
+                    $action = "{$className}Controller" . '@' . $restItem['name'];
+                }
                 $app->router->{$restItem['method']}($path . $restItem['pathExt'], array_merge([
                     'as' => $restItem['name'],
                     'uses' => $action,
