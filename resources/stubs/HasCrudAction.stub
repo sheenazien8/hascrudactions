@@ -2,10 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\{{model}}\BulkDelete;
-use App\Http\Requests\{{model}}\Index;
-use App\Http\Requests\{{model}}\Store;
-use App\Http\Requests\{{model}}\Update;
 use App\Repositories\{{repositoryClass}};
 use Sheenazien8\Hascrudactions\Traits\HasCrudAction;
 
@@ -15,18 +11,10 @@ class {{controllerName}} extends Controller
 
     protected $viewPath = '{{viewpath}}';
 
-    protected $permission = '{{viewpath}}';
-
-    protected $indexRequest = Index::class;
-
-    protected $storeRequest = Store::class;
-
-    protected $updateRequest = Update::class;
-
-    protected $bulkDestroyRequest = BulkDelete::class;
-
     protected $redirect = '{{viewpath}}';
 
     protected $repositoryClass = {{repositoryClass}}::class;
+
+    protected $rules = [];
 }
 
