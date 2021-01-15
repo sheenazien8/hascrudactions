@@ -2,10 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\{{model}}\BulkDelete;
-use App\Http\Requests\{{model}}\Index;
-use App\Http\Requests\{{model}}\Store;
-use App\Http\Requests\{{model}}\Update;
 use App\Repositories\{{repositoryClass}};
 use Sheenazien8\Hascrudactions\Traits\HasCrudAction;
 
