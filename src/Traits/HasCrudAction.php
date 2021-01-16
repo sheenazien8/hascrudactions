@@ -63,13 +63,13 @@ trait HasCrudAction
                 if (!is_array($this->indexService)) {
                     throw new ServiceActionsException('Index Service property must be array');
                 }
-                $resources = (new $this->indexService[0])->{$this->indexService[1]}($request);
+                $data = (new $this->indexService[0])->{$this->indexService[1]}($request);
 
                 if (isset($this->return) && $this->return == 'api') {
-                    return Response::success($resources);
+                    return Response::success($data);
                 }
 
-                return $this->repository->getObjectModel()->table($resources);
+                return $this->repository->getObjectModel()->table($data);
             } else {
                 if (isset($this->return) && $this->return == 'index') {
                     return;
@@ -77,19 +77,19 @@ trait HasCrudAction
 
                 if (isset($this->return) && $this->return == 'api') {
                     if ($request->paging) {
-                        $result = $this->repository->paginate($request, ['*'], '')->toArray();
+                        $data = $this->repository->paginate($request, ['*'], '')->toArray();
                     } else {
-                        $result = $this->repository->get($request, ['*'], '')->toArray();
+                        $data = $this->repository->get($request, ['*'], '')->toArray();
                     }
 
-                    return Response::success($result);
+                    return Response::success($data);
                 }
 
                 return $this->repository->datatable($request);
             }
         }
 
-        $resources = $this->permission ?? $this->redirect ?? $this->viewPath;
+        $resources = explode('.', $request->route()->getName())[0];
 
         if (isset($this->resources)) {
             $resources = $this->resources;
@@ -115,7 +115,7 @@ trait HasCrudAction
             $this->authorize("create-$this->permission");
         }
 
-        $resources = $this->permission ?? $this->redirect ?? $this->viewPath;
+        $resources = explode('.', request()->route()->getName())[0];
 
         if (isset($this->resources)) {
             $resources = $this->resources;
@@ -168,13 +168,21 @@ trait HasCrudAction
         } else {
             $data = $this->repository->create($request);
         }
-        $message = __('hascrudactions::app.global.message.success.create') . ' ' . ucfirst($this->permission ?? '');
+        $resources = explode('.', request()->route()->getName())[0];
+
+        $message = __('hascrudactions::app.global.message.success.create') . ' ' . ucfirst($resources ?? '');
 
         if (isset($this->return) && $this->return == 'api') {
-            return Response::success($data->toArray());
+            return Response::success(array_merge($data->toArray(), [
+                'message' => $message
+            ]));
         }
 
-        return redirect()->to(route($this->redirect ?? $this->viewPath . '.index'))->with('message', [
+        if (isset($this->resources)) {
+            $resources = $this->resources;
+        }
+
+        return redirect()->to(route($this->redirect ?? $resources . '.index'))->with('message', [
             'success' => StrHelper::dash_to_space($message)
         ]);
     }
@@ -206,19 +214,19 @@ trait HasCrudAction
                 if (!is_array($this->showService)) {
                     throw new ServiceActionsException('Index Service property must be array');
                 }
-                $resources = (new $this->showService[0])->{$this->showService[1]}($data);
+                $data = (new $this->showService[0])->{$this->showService[1]}($data);
 
                 if (isset($this->return) && $this->return == 'api') {
-                    return Response::success($resources);
+                    return Response::success($data);
                 }
 
-                return Response::success($resources);
+                return Response::success($data);
             }
 
             return Response::success($data->toArray());
         }
 
-        $resources = $this->permission ?? $this->redirect ?? $this->viewPath;
+        $resources = explode('.', request()->route()->getName())[0];
 
         if (isset($this->resources)) {
             $resources = $this->resources;
@@ -248,7 +256,7 @@ trait HasCrudAction
             $this->authorize("update-{$this->permission}");
         }
 
-        $resources = $this->permission ?? $this->redirect ?? $this->viewPath;
+        $resources = explode('.', request()->route()->getName())[0];
 
         if (isset($this->resources)) {
             $resources = $this->resources;
@@ -307,13 +315,21 @@ trait HasCrudAction
             $data = $this->repository->update($request, $data);
         }
 
-        $message = __('hascrudactions::app.global.message.success.update') . ' ' . ucfirst($this->permission ?? '');
+        $resources = explode('.', request()->route()->getName())[0];
 
-        if (isset($this->return) && $this->return == 'api') {
-            return Response::success($data->toArray());
+        if (isset($this->resources)) {
+            $resources = $this->resources;
         }
 
-        return redirect()->to(route($this->redirect ?? $this->viewPath . '.index'))->with('message', [
+        $message = __('hascrudactions::app.global.message.success.update') . ' ' . ucfirst($resources ?? '');
+
+        if (isset($this->return) && $this->return == 'api') {
+            return Response::success(array_merge($data->toArray(), [
+                'message' => $message
+            ]));
+        }
+
+        return redirect()->to(route($this->redirect ?? $resources . '.index'))->with('message', [
             'success' => StrHelper::dash_to_space($message)
         ]);
     }
@@ -338,7 +354,13 @@ trait HasCrudAction
 
         $data->delete();
 
-        $message = __('hascrudactions::app.global.message.success.delete') . ' ' . ucfirst($this->permission ?? '');
+        $resources = explode('.', request()->route()->getName())[0];
+
+        if (isset($this->resources)) {
+            $resources = $this->resources;
+        }
+
+        $message = __('hascrudactions::app.global.message.success.delete') . ' ' . ucfirst($resources ?? '');
 
         if (isset($this->return) && $this->return == 'api') {
             return Response::success([
@@ -347,7 +369,7 @@ trait HasCrudAction
             ]);
         }
 
-        return redirect()->to(route($this->redirect ?? $this->viewPath . '.index'))->with('message', [
+        return redirect()->to(route($this->redirect ?? $resources . '.index'))->with('message', [
             'success' => StrHelper::dash_to_space($message)
         ]);
     }
@@ -359,7 +381,13 @@ trait HasCrudAction
      */
     public function bulkDestroy()
     {
-        $message = __('hascrudactions::app.global.message.fail.delete') . ' ' . ucfirst($this->permission ?? '');
+        $resources = explode('.', request()->route()->getName())[0];
+
+        if (isset($this->resources)) {
+            $resources = $this->resources;
+        }
+
+        $message = __('hascrudactions::app.global.message.fail.delete') . ' ' . ucfirst($resources ?? '');
 
         if (!request()->ids) {
             return redirect()->to(route($this->redirect ?? $this->viewPath . '.index'))->with('message', [
@@ -384,7 +412,7 @@ trait HasCrudAction
 
         $this->repository->bulkDestroy($request);
 
-        $message = __('hascrudactions::app.global.message.success.delete') . ' ' . ucfirst($this->permission ?? '');
+        $message = __('hascrudactions::app.global.message.success.delete') . ' ' . ucfirst($resources ?? '');
 
         if (isset($this->return) && $this->return == 'api') {
             return Response::success([
@@ -393,7 +421,7 @@ trait HasCrudAction
             ]);
         }
 
-        return redirect()->to(route($this->redirect ?? $this->viewPath . '.index'))->with('message', [
+        return redirect()->to(route($this->redirect ?? $resources . '.index'))->with('message', [
             'success' => StrHelper::dash_to_space($message)
         ]);
     }

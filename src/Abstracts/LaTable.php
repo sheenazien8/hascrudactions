@@ -56,7 +56,7 @@ abstract class LaTable extends DataTable implements Responsable
                 return $model->id;
             })
             ->addColumn('action', function ($model) {
-                $resources = explode('.', request()->route()->action['as'])[0];
+                $resources = explode('.', request()->route()->getName())[0];
                 return view('hascrudactions::partials.table.action', [
                     'delete' => route("{$resources}.destroy", $model->id),
                     'model' => $model,
