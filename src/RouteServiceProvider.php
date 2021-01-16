@@ -31,8 +31,9 @@ class RouteServiceProvider extends ServiceProvider
     private function registerMacros()
     {
         Route::macro('hascrud', function ($slug, $controllerClass = null,  $options = [], $resource_options = [], $resource = true) {
+            /* dd($controllerClass, $slug, $options); */
             $slugs = explode('.', $slug);
-            $singularName = Str::singular(str_replace('.', "/", $slug));
+            $prefixSlug = str_replace('.', "/", $slug);
             $className = implode("", array_map(function ($s) {
                 return ucfirst(Str::singular($s));
             }, $slugs));
@@ -63,14 +64,14 @@ class RouteServiceProvider extends ServiceProvider
                 $customRoutePrefix = "{$groupPrefix}.{$slug}";
                 $resourceCustomGroupPrefix = "{$groupPrefix}.";
             } else {
-                $customRoutePrefix = $singularName;
+                $customRoutePrefix = $slug;
 
                 // Prevent Laravel from generating route names with duplication
                 $resourceCustomGroupPrefix = '';
             }
 
             foreach ($customRoutes as $route) {
-                $routeSlug = "{$route}/{$singularName}";
+                $routeSlug = "{$route}/{$prefixSlug}";
                 $mapping = ['as' => $customRoutePrefix . ".{$route}", 'uses' => "{$className}Controller@{$route}"];
                 if ($controllerClass) {
                     $mapping = ['as' => $customRoutePrefix . ".{$route}", 'uses' => "{$controllerClass}@{$route}"];
@@ -80,14 +81,15 @@ class RouteServiceProvider extends ServiceProvider
                     Route::delete($routeSlug, $mapping);
                 }
             }
+
             if ($resource) {
-                Route::group(['as' => $resourceCustomGroupPrefix], function () use ($slug, $className, $resource_options, $controllerClass, $singularName) {
+                Route::group(['as' => $resourceCustomGroupPrefix], function () use ($slug, $className, $resource_options, $controllerClass) {
                     if ($controllerClass) {
                         $controller = $controllerClass;
                     } else {
                         $controller = "{$className}Controller";
                     }
-                    Route::resource($slug, $controller, $resource_options)->names($singularName);
+                    Route::resource($slug, $controller, $resource_options);
                 });
             }
         });
