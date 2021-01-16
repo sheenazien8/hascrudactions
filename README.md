@@ -23,7 +23,8 @@ This package allows you to build a CRUD with tiny Controller and keep the patter
 
 
 ## Requirements
-This package uses ```yajra/laravel-datatables``` (https://yajrabox.com/docs/laravel-datatables/master) for index table view under the hood, Please make sure you include this dependencies before using this library.
+* laravel 7.^
+* This package uses ```yajra/laravel-datatables``` (https://yajrabox.com/docs/laravel-datatables/master) for index table view under the hood, Please make sure you include this dependencies before using this library.
 
 ## Installation
 
