@@ -25,7 +25,7 @@ This package allows you to build a CRUD with tiny Controller and keep the patter
 ## Requirements
 * laravel 8.^ **On Development**
 * laravel 7.^
-* This package uses ```yajra/laravel-datatables``` (https://yajrabox.com/docs/laravel-datatables/master) for index table view under the hood, Please make sure you include this dependencies before using this library.
+* This package uses ```yajra/laravel-datatables``` (https://yajrabox.com/docs/laravel-datatables/master/quick-starter) for index table view under the hood, Please make sure you include this dependencies before using this library.
 
 ## Installation
 
@@ -50,6 +50,26 @@ First, Generate the Hascrud route with ```php artisan hascrudaction:make Employe
 *   App\Http\Requests\Employee\\.*
 *   App\Repositories\EmployeeRepository
 *   resources/views/employee/\.*
+
+And Setup the datatable.
+### Install Datatable Package and Setup 
+#### Install Composer
+```composer require yajra/laravel-datatables```
+#### Install Assets
+```yarn add datatables.net-bs4 datatables.net-buttons-bs4```
+#### Register datatables.net in resources js and css file
+```
+// Js file
+require('bootstrap');
+require('datatables.net-bs4');
+require('datatables.net-buttons-bs4');
+
+// Scss file
+@import "~datatables.net-bs4/css/dataTables.bootstrap4.css";
+@import "~datatables.net-buttons-bs4/css/buttons.bootstrap4.css";
+```
+#### Compile Assets
+```yarn dev / watch / prod```
 
 Next, you can add the path in ```routes/web.php```, edit file config in ```config/hascrudactions.php``` for wrapper blade layouts and javascript views, add Traits ```HasLaTable``` in Model Class Employee.
 #### routes/web.php
@@ -82,8 +102,7 @@ class Employee extends Model
 }
 ```
 
-And the last, you can define what columns you want to display in the index view in ```resources/views/employee/components/table.blade.php```, and then you must define what columns you want to add or edit in the model ``Employee`` with ```$fillable``` property  and form view ```resources/views/employee/components/form.blade.php```
-
+And the last, you can define what columns you want to display in the index view in ```resources/views/employee/components/table.blade.php```, and then you must define what columns you want to add or edit in the model ``Employee`` with ```$fillable``` property and form view ```resources/views/employee/components/form.blade.php```, and also you can get the binding data from controller with the ```$data``` variable name.
 
 ### Testing
 
