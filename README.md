@@ -79,7 +79,7 @@ Route::hascrud('employee');
 #### config/hascrudactions.php
 ```php
 /**
- * Wrapper view, you can adjust static view like footer adn header
+ * Wrapper view, you can adjust static view like footer and header
  * put file in views path
  * layouts:
  * section:
