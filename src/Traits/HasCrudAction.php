@@ -89,7 +89,7 @@ trait HasCrudAction
             }
         }
 
-        $resources = $this->permission ?? $this->redirect;
+        $resources = $this->permission ?? $this->redirect ?? $this->viewPath;
 
         if (isset($this->resources)) {
             $resources = $this->resources;
@@ -115,7 +115,7 @@ trait HasCrudAction
             $this->authorize("create-$this->permission");
         }
 
-        $resources = $this->permission ?? $this->redirect;
+        $resources = $this->permission ?? $this->redirect ?? $this->viewPath;
 
         if (isset($this->resources)) {
             $resources = $this->resources;
@@ -170,15 +170,11 @@ trait HasCrudAction
         }
         $message = __('hascrudactions::app.global.message.success.create') . ' ' . ucfirst($this->permission ?? '');
 
-        /* if (method_exists($data, 'logs')) { */
-        /*     Activity::modelable($data)->auth()->creating(); */
-        /* } */
-
         if (isset($this->return) && $this->return == 'api') {
             return Response::success($data->toArray());
         }
 
-        return redirect()->to($this->redirect)->with('message', [
+        return redirect()->to(route($this->redirect ?? $this->viewPath . '.index'))->with('message', [
             'success' => StrHelper::dash_to_space($message)
         ]);
     }
@@ -222,7 +218,7 @@ trait HasCrudAction
             return Response::success($data->toArray());
         }
 
-        $resources = $this->permission ?? $this->redirect;
+        $resources = $this->permission ?? $this->redirect ?? $this->viewPath;
 
         if (isset($this->resources)) {
             $resources = $this->resources;
@@ -247,11 +243,12 @@ trait HasCrudAction
         }
 
         $data = $this->repository->find($model);
+
         if (isset($this->permission)) {
             $this->authorize("update-{$this->permission}");
         }
 
-        $resources = $this->permission ?? $this->redirect;
+        $resources = $this->permission ?? $this->redirect ?? $this->viewPath;
 
         if (isset($this->resources)) {
             $resources = $this->resources;
@@ -289,12 +286,9 @@ trait HasCrudAction
                 $this->validate($request, $this->rules);
             }
             if (is_string($this->rules)) {
+                /* dd('ok', $this->rules); */
                 $request = resolve($this->rules);
             }
-        }
-
-        if (isset($this->rules)) {
-            $this->validate($request, $this->rules);
         }
 
         if (isset($this->permission)) {
@@ -319,11 +313,7 @@ trait HasCrudAction
             return Response::success($data->toArray());
         }
 
-        /* if (method_exists($data, 'logs')) { */
-        /*     Activity::modelable($data)->auth()->updating(); */
-        /* } */
-
-        return redirect()->to($this->redirect)->with('message', [
+        return redirect()->to(route($this->redirect ?? $this->viewPath . '.index'))->with('message', [
             'success' => StrHelper::dash_to_space($message)
         ]);
     }
@@ -357,7 +347,7 @@ trait HasCrudAction
             ]);
         }
 
-        return redirect()->to($this->redirect)->with('message', [
+        return redirect()->to(route($this->redirect ?? $this->viewPath . '.index'))->with('message', [
             'success' => StrHelper::dash_to_space($message)
         ]);
     }
@@ -372,7 +362,7 @@ trait HasCrudAction
         $message = __('hascrudactions::app.global.message.fail.delete') . ' ' . ucfirst($this->permission ?? '');
 
         if (!request()->ids) {
-            return redirect()->to($this->redirect)->with('message', [
+            return redirect()->to(route($this->redirect ?? $this->viewPath . '.index'))->with('message', [
                 'error' => StrHelper::dash_to_space($message)
             ]);
         }
@@ -403,7 +393,7 @@ trait HasCrudAction
             ]);
         }
 
-        return redirect()->to($this->redirect)->with('message', [
+        return redirect()->to(route($this->redirect ?? $this->viewPath . '.index'))->with('message', [
             'success' => StrHelper::dash_to_space($message)
         ]);
     }

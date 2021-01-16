@@ -11,8 +11,6 @@ class {{controllerName}} extends Controller
 
     protected $viewPath = '{{viewpath}}';
 
-    protected $redirect = '{{viewpath}}';
-
     protected $repositoryClass = {{repositoryClass}}::class;
 
     protected $rules = [];
