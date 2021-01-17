@@ -14,6 +14,7 @@ use Sheenazien8\Hascrudactions\Traits\InjectBladeResolve;
 use Sheenazien8\Hascrudactions\Views\Components\Button;
 use Sheenazien8\Hascrudactions\Views\Components\Form;
 use Sheenazien8\Hascrudactions\Views\Components\IndexTable;
+use Sheenazien8\Hascrudactions\Views\Components\Link;
 
 class HascrudactionsServiceProvider extends ServiceProvider
 {
@@ -40,7 +41,8 @@ class HascrudactionsServiceProvider extends ServiceProvider
         $this->loadViewComponentsAs('components', [
             'index-table' => IndexTable::class,
             'form' => Form::class,
-            'button' => Button::class
+            'button' => Button::class,
+            'link' => Link::class
         ]);
 
         if ($this->app->runningInConsole()) {

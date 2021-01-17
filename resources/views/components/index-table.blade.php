@@ -7,9 +7,13 @@
           </div>
           <div class="row py-3 w-50">
             <div class="col-md-6 text-right">
-              <a class="btn btn-primary" href="{{ route("{$resources}.create") }}"><span><svg style="width:15px;margin-right:5px; margin-bottom:2px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clip-rule="evenodd" />
-                  </svg></span>@lang('hascrudactions::app.global.create')</a>
+              <x-components-button :title="__('hascrudactions::app.global.create')" :to="route($resources.'.create')">
+                <x-slot name="icon">
+                    <svg style="width:15px;margin-right:5px; margin-bottom:2px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                      <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clip-rule="evenodd" />
+                    </svg>
+                </x-slot>
+              </x-components-button>
             </div>
             <div class="col-md-6">
               <select id="" class="form-control bulk-action">
@@ -52,9 +56,14 @@
           </div>
           <div class="row py-3 w-50">
             <div class="col-md-6 text-right">
-              <a class="btn btn-primary" href="{{ route("{$resources}.create") }}"><span><svg style="width:15px;margin-right:5px; margin-bottom:2px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+              {{-- <x-components-link :route="$resources.'.create'" :title="__('hascrudactions::app.global.create')" class="btn btn-primary"></x-components-link> --}}
+              <x-components-button :title="__('hascrudactions::app.global.create')" :to="route($resources.'.create')">
+                <x-slot name="icon">
+                  <svg style="width:15px;margin-right:5px; margin-bottom:2px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                     <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clip-rule="evenodd" />
-                  </svg></span>@lang('hascrudactions::app.global.create')</a>
+                  </svg>
+                </x-slot>
+              </x-components-button>
             </div>
             <div class="col-md-6">
               <select id="" class="form-control bulk-action">

@@ -23,34 +23,22 @@ class Button extends Component
      */
     public $title;
     /**
-     * @var string $icon
-     */
-    public $icon;
-    /**
      * @var string $to
      */
     public $to;
-    /**
-     * @var string $submitIcon
-     */
-    public $submitIcon;
 
     public function __construct(
         $to = '',
         $color = 'primary',
         $size = 'md',
         $block = false,
-        $title = '',
-        $icon = '',
-        $submitIcon = false
+        $title = ''
     ) {
         $this->to = $to;
         $this->color = $color;
         $this->size = $size;
         $this->block = $block;
         $this->title = $title;
-        $this->icon = $icon;
-        $this->submitIcon = $submitIcon;
     }
 
     /**

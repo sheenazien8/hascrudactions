@@ -16,19 +16,19 @@ return [
         'import' => 'Import :title',
         'message' => [
             'success' => [
-                'create' => 'Create Success',
-                'update' => 'Update Success',
-                'delete' => 'Delete Success',
+                'create' => 'Success Create :item',
+                'update' => 'Success Update :item',
+                'delete' => 'Success Delete :item',
             ],
             'error' => [
-                'create' => 'Create Error',
-                'update' => 'Update Error',
-                'delete' => 'Delete Error',
+                'create' => 'Error Create :item',
+                'update' => 'Error Update :item',
+                'delete' => 'Error Delete :item',
             ],
             'fail' => [
-                'create' => 'Create Fail',
-                'update' => 'Update Fail',
-                'delete' => 'Delete Fail',
+                'create' => 'Fail Create :item',
+                'update' => 'Fail Update :item',
+                'delete' => 'Fail Delete :item',
             ],
         ],
         'yes' => 'Yes',

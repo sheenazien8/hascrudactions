@@ -16,19 +16,19 @@ return [
         'import' => 'Import :title',
         'message' => [
             'success' => [
-                'create' => 'Sukses Menambahkan',
-                'update' => 'Sukses Memeperbarui',
-                'delete' => 'Sukses Menghapus',
+                'create' => 'Sukses Menambahkan :item',
+                'update' => 'Sukses Memeperbarui :item',
+                'delete' => 'Sukses Menghapus :item',
             ],
             'error' => [
-                'create' => 'Gagal Menambahkan',
-                'update' => 'Gagal Memeperbarui',
-                'delete' => 'Gagal Menghapus',
+                'create' => 'Gagal Menambahkan :item',
+                'update' => 'Gagal Memeperbarui :item',
+                'delete' => 'Gagal Menghapus :item',
             ],
             'fail' => [
-                'create' => 'Gagal Menambahkan',
-                'update' => 'Gagal Memeperbarui',
-                'delete' => 'Gagal Menghapus',
+                'create' => 'Gagal Menambahkan :item',
+                'update' => 'Gagal Memeperbarui :item',
+                'delete' => 'Gagal Menghapus :item',
             ],
         ],
         'yes' => 'Ya',
