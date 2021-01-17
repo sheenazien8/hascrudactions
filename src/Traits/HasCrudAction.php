@@ -170,7 +170,9 @@ trait HasCrudAction
         }
         $resources = explode('.', request()->route()->getName())[0];
 
-        $message = __('hascrudactions::app.global.message.success.create') . ' ' . ucfirst($resources ?? '');
+        $message = __('hascrudactions::app.global.message.success.create', [
+            'item' => ucfirst($resources ?? '')
+        ]);
 
         if (isset($this->return) && $this->return == 'api') {
             return Response::success(array_merge($data->toArray(), [
@@ -321,7 +323,9 @@ trait HasCrudAction
             $resources = $this->resources;
         }
 
-        $message = __('hascrudactions::app.global.message.success.update') . ' ' . ucfirst($resources ?? '');
+        $message = __('hascrudactions::app.global.message.success.update', [
+            'item' => ucfirst($resources ?? '')
+        ]);
 
         if (isset($this->return) && $this->return == 'api') {
             return Response::success(array_merge($data->toArray(), [
@@ -360,7 +364,9 @@ trait HasCrudAction
             $resources = $this->resources;
         }
 
-        $message = __('hascrudactions::app.global.message.success.delete') . ' ' . ucfirst($resources ?? '');
+        $message = __('hascrudactions::app.global.message.success.delete', [
+            'item' => ucfirst($resources ?? '')
+        ]);
 
         if (isset($this->return) && $this->return == 'api') {
             return Response::success([
@@ -387,7 +393,9 @@ trait HasCrudAction
             $resources = $this->resources;
         }
 
-        $message = __('hascrudactions::app.global.message.fail.delete') . ' ' . ucfirst($resources ?? '');
+        $message = __('hascrudactions::app.global.message.fail.delete', [
+            'item' => ucfirst($resources ?? '')
+        ]);
 
         if (!request()->ids) {
             return redirect()->to(route($this->redirect ?? $this->viewPath . '.index'))->with('message', [
@@ -412,7 +420,9 @@ trait HasCrudAction
 
         $this->repository->bulkDestroy($request);
 
-        $message = __('hascrudactions::app.global.message.success.delete') . ' ' . ucfirst($resources ?? '');
+        $message = __('hascrudactions::app.global.message.success.delete', [
+            'item' => ucfirst($resources ?? '')
+        ]);
 
         if (isset($this->return) && $this->return == 'api') {
             return Response::success([
