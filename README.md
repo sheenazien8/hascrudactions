@@ -39,6 +39,13 @@ composer require sheenazien8/hascrudactions
 ```bash
 php artisan vendor:publish --provider="Sheenazien8\Hascrudactions\HascrudactionsServiceProvider"
 ```
+
+#### Register the provider class in config/app.php
+```php
+"providers" => [
+    Sheenazien8\Hascrudactions\HascrudactionsServiceProvider::class,
+]
+```
 #### Lumen Configuration
 ```bash
 mkdir -p config
