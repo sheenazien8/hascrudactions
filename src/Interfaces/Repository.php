@@ -13,11 +13,11 @@ interface Repository
 {
     public function datatable(Request $request): LaTable;
 
-    public function paginate(Request $request, array $columns = ['*'], string $search): LengthAwarePaginator;
+    public function paginate(Request $request, array $columns = ['*'], string $search = null): LengthAwarePaginator;
 
-    public function all(Request $request, array $columns = ['*'], string $search): Collection;
+    public function all(Request $request, array $columns = ['*'], string $search = null): Collection;
 
-    public function get(Request $request, array $columns = ['*'], string $search): Collection;
+    public function get(Request $request, array $columns = ['*'], string $search = null): Collection;
 
     public function create(Request $request): Model;
 

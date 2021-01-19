@@ -92,11 +92,11 @@ abstract class Repository implements RepositoryInterface
      *
      * @param Request $request
      * @param array $columns (optional)
-     * @param string $search
+     * @param string $search (optional)
      *
      * @return LengthAwarePaginator
      */
-    public function paginate(Request $request, array $columns = ['*'], string $search): LengthAwarePaginator
+    public function paginate(Request $request, array $columns = ['*'], string $search = null): LengthAwarePaginator
     {
         $self = $this;
         return $this->query()->select($columns)
@@ -115,11 +115,11 @@ abstract class Repository implements RepositoryInterface
      *
      * @param Request $request
      * @param array $columns (optional)
-     * @param string $search
+     * @param string $search (optional)
      *
      * @return Collection
      */
-    public function all(Request $request, array $columns = ['*'], string $search): Collection
+    public function all(Request $request, array $columns = ['*'], string $search = null): Collection
     {
         $self = $this;
         return $this->query()->select($columns)
@@ -138,11 +138,11 @@ abstract class Repository implements RepositoryInterface
      *
      * @param Request $request
      * @param array $columns (optional)
-     * @param string $search
+     * @param string $search (optional)
      *
      * @return Collection
      */
-    public function get(Request $request, array $columns = ['*'], string $search): Collection
+    public function get(Request $request, array $columns = ['*'], string $search = null): Collection
     {
         return $this->query()->select($columns)->when(!is_null($request->s), function ($query) use ($request, $search) {
             return $query->where($search, 'LIKE', $request->s . '%%');
