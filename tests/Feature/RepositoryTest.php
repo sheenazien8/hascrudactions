@@ -5,9 +5,9 @@ namespace Sheenazien8\Hascrudactions\Tests\Feature;
 use Orchestra\Testbench\TestCase;
 use Sheenazien8\Hascrudactions\HascrudactionsServiceProvider;
 use Sheenazien8\Hascrudactions\Tests\Repositories\TestingModelRepository;
-use Sheenazien8\Hascrudactions\Tests\TestingModel;
 use Sheenazien8\Hascrudactions\Tests\database\migrations\CreateTestingTables;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Sheenazien8\Hascrudactions\Tests\Models\TestingModel;
 
 class RepositoryTest extends TestCase
 {
