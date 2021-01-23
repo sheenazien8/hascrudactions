@@ -1,6 +1,6 @@
 <?php
 
-Namespace App\Repositories;
+namespace App\Repositories;
 
 use Sheenazien8\Hascrudactions\Abstracts\Repository as RepositoryAbstract;
 
@@ -13,6 +13,4 @@ class {{repositoryName}} extends RepositoryAbstract
     {
         parent::__construct(new \{{model}}());
     }
-
 }
-
