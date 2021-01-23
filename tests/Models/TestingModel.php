@@ -1,6 +1,6 @@
 <?php
 
-namespace Sheenazien8\Hascrudactions\Tests;
+namespace Sheenazien8\Hascrudactions\Tests\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Orchestra\Testbench\Concerns\WithFactories;

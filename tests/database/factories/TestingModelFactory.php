@@ -3,7 +3,7 @@
 namespace Sheenazien8\Hascrudactions\Tests\database\factories;
 
 use Faker\Generator as Faker;
-use Sheenazien8\Hascrudactions\Tests\TestingModel;
+use Sheenazien8\Hascrudactions\Tests\Models\TestingModel;
 
 $factory->define(TestingModel::class, function (Faker $faker) {
     return [

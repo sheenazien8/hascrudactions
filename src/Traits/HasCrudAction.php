@@ -398,7 +398,7 @@ trait HasCrudAction
         ]);
 
         if (!request()->ids) {
-            return redirect()->to(route($this->redirect ?? $this->viewPath . '.index'))->with('message', [
+            return redirect()->to(route($resources . '.index'))->with('message', [
                 'error' => StrHelper::dash_to_space($message)
             ]);
         }

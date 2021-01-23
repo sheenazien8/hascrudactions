@@ -1,6 +1,6 @@
 <?php
 
-namespace Sheenazien8\Hascrudactions\LaTable{{NameSpace}};
+namespace App\Latable{{NameSpace}};
 
 use Carbon\Carbon;
 use Sheenazien8\Hascrudactions\Abstracts\LaTable;
