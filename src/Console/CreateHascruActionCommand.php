@@ -58,7 +58,8 @@ class CreateHascruActionCommand extends Command
                 }
             }
             $this->generateRepository($repositoryClass, $model);
-            $this->createController($model, $viewPath, $repositoryClass);
+            $controllerName = "{$model}Controller";
+            $this->createController($controllerName, $viewPath, $repositoryClass);
             if (function_exists('config_path')) {
                 $this->generateView($model);
             }
@@ -96,18 +97,15 @@ class CreateHascruActionCommand extends Command
         $this->info("Repository $model is created");
     }
 
-    private function createController(string $model, string $viewPath, string $repositoryClass): void
+    private function createController(string $controllerName, string $viewPath, string $repositoryClass): void
     {
-        $controllerName = "{$model}Controller";
         $requestClasName = str_replace(
             [
-                '{{model}}',
                 '{{controllerName}}',
                 '{{viewpath}}',
                 '{{repositoryClass}}',
             ],
             [
-                $model,
                 $controllerName,
                 $viewPath,
                 $repositoryClass,
