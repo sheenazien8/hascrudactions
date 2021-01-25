@@ -3,6 +3,7 @@
 namespace Sheenazien8\Hascrudactions\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * Class Hascrud
@@ -15,6 +16,7 @@ class HascrudRow extends Model
      */
     protected $fillable = [
         'type',
+        'collumn',
         'display_name',
         'store_validation',
         'update_validation',
@@ -22,6 +24,12 @@ class HascrudRow extends Model
         'is_required',
         'show_in_read',
         'show_in_edit',
-        'show_in_create'
+        'show_in_create',
+        'show_in_detail'
     ];
+
+    public function hascrud(): BelongsTo
+    {
+        return $this->belongsTo(Hascrud::class, 'hascrud_id');
+    }
 }

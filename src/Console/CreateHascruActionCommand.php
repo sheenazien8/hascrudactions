@@ -88,6 +88,16 @@ class CreateHascruActionCommand extends Command
         $this->info("Add Your Rule In App/Http/Requests/{$model}");
     }
 
+    private function createController(string $controllerName, string $viewPath, string $repositoryClass): void
+    {
+        Artisan::call('hascrudaction:controller', [
+            'name' => $controllerName,
+            '--viewpath' => $viewPath,
+            '--repository' => $repositoryClass
+        ]);
+        $this->info("Controller $controllerName is created");
+    }
+
     private function generateRepository(string $repositoryClass, string $model): void
     {
         Artisan::call('hascrudaction:repository', [
@@ -95,25 +105,6 @@ class CreateHascruActionCommand extends Command
             '--model' => $model
         ]);
         $this->info("Repository $model is created");
-    }
-
-    private function createController(string $controllerName, string $viewPath, string $repositoryClass): void
-    {
-        $requestClasName = str_replace(
-            [
-                '{{controllerName}}',
-                '{{viewpath}}',
-                '{{repositoryClass}}',
-            ],
-            [
-                $controllerName,
-                $viewPath,
-                $repositoryClass,
-            ],
-            function_exists('config_path') ? $this->getStub('HasCrudAction') : $this->getStub('LumenHasCrudAction')
-        );
-        file_put_contents(app_path("Http/Controllers/{$controllerName}.php"), $requestClasName);
-        $this->info("Controller $controllerName is created");
     }
 
     private function generateView(string $model)
