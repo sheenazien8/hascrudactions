@@ -29,7 +29,6 @@ class CreateRepositotyCommandTest extends TestCase
         }
 
         $this->assertFalse(File::exists($reposityClass));
-        /* dd(config('hascrudactions.model_folder')); */
 
         Artisan::call('hascrudaction:repository', [
             'name' => 'FooRepository',

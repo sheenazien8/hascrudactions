@@ -1,4 +1,7 @@
 <div>
+  @php
+    $table_id = str_replace('.', '-', $resources);
+  @endphp
   @if ($withoutCard)
     <div class="table-responsive">
         <div class="d-flex justify-content-between">
@@ -23,7 +26,7 @@
             </div>
           </div>
         </div>
-      <table class="table table-hover" id="{{ $resources }}-table">
+      <table class="table table-hover" id="{{ $table_id }}-table">
         <thead>
           <tr>
             @if (!$withoutCheckbox)
@@ -76,7 +79,7 @@
       </div>
       <div class="card-body">
         <div class="table-responsive">
-          <table class="table table-hover" id="{{ $resources }}-table" width="100%">
+          <table class="table table-hover" id="{{ $table_id }}-table" width="100%">
             <thead>
               <tr>
                 @if (!$withoutCheckbox)
@@ -143,4 +146,3 @@
     </script>
   @endif
 @endpush
-

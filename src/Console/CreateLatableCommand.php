@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 use Sheenazien8\Hascrudactions\Traits\GetStubTrait;
 
-
 /**
  * Class CreateLatableCommand
  * @author sheenazien8
@@ -21,8 +20,7 @@ class CreateLatableCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'hascrudaction:latable
-                            {name : Pass File Name}';
+    protected $signature = 'hascrudaction:latable {name : Pass File Name}';
 
     /**
      * The console command description.
@@ -74,6 +72,7 @@ class CreateLatableCommand extends Command
             ],
             $this->getStub('Latable')
         );
+
         if (!File::exists(app_path("Latable"))) {
             if ($fileNameSpace) {
                 if (!File::exists(app_path("Latable/{$humanNameSpace}"))) {
@@ -84,6 +83,7 @@ class CreateLatableCommand extends Command
             }
             // path does not exist
         }
+
         file_put_contents(app_path("Latable/{$humanNameSpace}/{$className}.php"), $template);
         $this->info("Latable $className is created");
     }

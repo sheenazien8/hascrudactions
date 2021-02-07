@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 
 if (!function_exists('dash_to_space')) {
@@ -45,6 +46,24 @@ if (!function_exists('get_lang')) {
         }
     }
 }
+
+if (!function_exists('except_last_word')) {
+    /**
+     * except_last_word
+     *
+     * @param string $string
+     * @access public
+     * @return string
+     */
+    function except_last_word(string $string): string
+    {
+        $words = explode('.', $string);
+        $array = Arr::except($words, count($words) - 1);
+
+        return join('.', $array);
+    } // End function except_last_word
+}
+
 if (!function_exists('app_path')) {
     /**
      * Get the path to the application folder.

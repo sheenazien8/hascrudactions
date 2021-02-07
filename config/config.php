@@ -5,7 +5,7 @@
  */
 return [
     /**
-     * this key config settings for model folder
+     * this key config settings for model namespace
      * the default folder is App\\
      */
     'model_folder' => 'App\\',
@@ -27,5 +27,20 @@ return [
         'layouts' => '',
         'section' => '',
         'javascript' => ''
+    ],
+
+    // route config
+    'middleware' => ['web', 'auth'],
+    'prefix' => null,
+
+    /**
+     * Available value for strategy form_request
+     *
+     * single_class
+     * full_url
+     * array
+     */
+    'form_request' => [
+        'strategy' => 'single_class'
     ]
 ];

@@ -3,12 +3,14 @@
 namespace Sheenazien8\Hascrudactions;
 
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
+use Illuminate\Routing\Controller;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\View;
 
 /**
  * Class RouteServiceProvider
- * @author yourname
+ * @author sheenazien8
  */
 class RouteServiceProvider extends ServiceProvider
 {
@@ -30,7 +32,16 @@ class RouteServiceProvider extends ServiceProvider
      */
     private function registerMacros()
     {
-        Route::macro('hascrud', function ($slug, $controllerClass = null,  $options = [], $resource_options = [], $resource = true) {
+        /**
+         * add hascrud static function to Route instance
+         *
+         * @param string $slug
+         * @param string|Controller $controllerClass (optional)
+         * @param array $options (optional)
+         * @param array $resource_options (optional)
+         * @param bool $resource (optional)
+         */
+        Route::macro('hascrud', function ($slug, $controllerClass = null, $options = [], $resource_options = [], $resource = true) {
             /* dd($controllerClass, $slug, $options); */
             $slugs = explode('.', $slug);
             $prefixSlug = str_replace('.', "/", $slug);
@@ -55,8 +66,7 @@ class RouteServiceProvider extends ServiceProvider
             $groupPrefix = trim(str_replace('/', '.', Route::getLastGroupPrefix()), '.');
 
             // Check if name will be a duplicate, and prevent if needed/allowed
-            if (
-                !empty($groupPrefix) &&
+            if (!empty($groupPrefix) &&
                 (blank($lastRouteGroupName) ||
                     config('hascrudactions.allow_duplicate_route', true) ||
                     (!Str::endsWith($lastRouteGroupName, ".{$groupPrefix}.")))

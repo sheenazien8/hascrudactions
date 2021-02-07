@@ -89,7 +89,7 @@ trait HasCrudAction
             }
         }
 
-        $resources = explode('.', $request->route()->getName())[0];
+        $resources = except_last_word($request->route()->getName());
 
         if (isset($this->resources)) {
             $resources = $this->resources;
@@ -115,7 +115,7 @@ trait HasCrudAction
             $this->authorize("create-$this->permission");
         }
 
-        $resources = explode('.', request()->route()->getName())[0];
+        $resources = except_last_word(request()->route()->getName());
 
         if (isset($this->resources)) {
             $resources = $this->resources;
@@ -168,7 +168,7 @@ trait HasCrudAction
         } else {
             $data = $this->repository->create($request);
         }
-        $resources = explode('.', request()->route()->getName())[0];
+        $resources = except_last_word(request()->route()->getName());
 
         $message = __('hascrudactions::app.global.message.success.create', [
             'item' => ucfirst($resources ?? '')
@@ -209,7 +209,6 @@ trait HasCrudAction
 
         if (request()->ajax() || isset($this->return) && $this->return == 'api') {
             if (isset($this->showService)) {
-
                 if (count($this->showService) > 2) {
                     throw new ServiceActionsException('Index Service property is cant to more 2 show');
                 }
@@ -228,7 +227,7 @@ trait HasCrudAction
             return Response::success($data->toArray());
         }
 
-        $resources = explode('.', request()->route()->getName())[0];
+        $resources = except_last_word(request()->route()->getName());
 
         if (isset($this->resources)) {
             $resources = $this->resources;
@@ -258,7 +257,7 @@ trait HasCrudAction
             $this->authorize("update-{$this->permission}");
         }
 
-        $resources = explode('.', request()->route()->getName())[0];
+        $resources = except_last_word(request()->route()->getName());
 
         if (isset($this->resources)) {
             $resources = $this->resources;
@@ -317,7 +316,7 @@ trait HasCrudAction
             $data = $this->repository->update($request, $data);
         }
 
-        $resources = explode('.', request()->route()->getName())[0];
+        $resources = except_last_word(request()->route()->getName());
 
         if (isset($this->resources)) {
             $resources = $this->resources;
@@ -358,7 +357,7 @@ trait HasCrudAction
 
         $data->delete();
 
-        $resources = explode('.', request()->route()->getName())[0];
+        $resources = except_last_word(request()->route()->getName());
 
         if (isset($this->resources)) {
             $resources = $this->resources;
@@ -387,7 +386,7 @@ trait HasCrudAction
      */
     public function bulkDestroy()
     {
-        $resources = explode('.', request()->route()->getName())[0];
+        $resources = except_last_word(request()->route()->getName());
 
         if (isset($this->resources)) {
             $resources = $this->resources;

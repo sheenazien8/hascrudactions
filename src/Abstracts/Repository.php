@@ -9,6 +9,7 @@ use Sheenazien8\Hascrudactions\Interfaces\Repository as RepositoryInterface;
 use Closure;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection as SupportCollection;
 use Illuminate\Support\Facades\DB;
 
 abstract class Repository implements RepositoryInterface
@@ -16,12 +17,22 @@ abstract class Repository implements RepositoryInterface
     /** @var string model */
     private Model $model;
 
+    /** @var Model $parent */
+    private Model $parent;
+
+    /** @var string $method */
+    private string $method;
+
+    /** @var SupportCollection $parents */
+    private SupportCollection $parents;
+
     /**
      * @param Model $model
      */
     public function __construct(Model $model)
     {
         $this->model = $model;
+        $this->parents = collect();
     }
 
     /**
@@ -154,6 +165,11 @@ abstract class Repository implements RepositoryInterface
     public function create(Request $request): Model
     {
         $model = new $this->model;
+        if ($this->getParents()->count() > 0) {
+            foreach ($this->getParents() as $key => $value) {
+                $model->{$key}()->associate($value);
+            }
+        }
         $model->fill($request->all());
         $model->save();
 
@@ -251,5 +267,51 @@ abstract class Repository implements RepositoryInterface
         }
 
         return $this;
+    }
+
+    /**
+     * set parent hascrud row
+     *
+     * @param Model $parent
+     *
+     * @return self
+     */
+    public function setParent(Model $parent, string $method): self
+    {
+        $this->parent = $parent;
+        $this->method = $method;
+        $this->parents->put($method, $parent);
+
+        return $this;
+    }
+
+    /**
+     * Get Parent SupportCollection
+     *
+     * @return Collection
+     */
+    public function getParents(): SupportCollection
+    {
+        return $this->parents;
+    }
+
+    /**
+     * get parent
+     *
+     * @return Model
+     */
+    public function getParent(): Model
+    {
+        return $this->parent;
+    }
+
+    /**
+     * get method
+     *
+     * @return string
+     */
+    public function getMethod(): string
+    {
+        return $this->method;
     }
 }
