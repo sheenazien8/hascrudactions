@@ -4,7 +4,9 @@ namespace Sheenazien8\Hascrudactions;
 
 use Illuminate\Routing\Route;
 use Illuminate\Support\Facades\Route as FacadesRoute;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Str;
 use Sheenazien8\Hascrudactions\Console\CreateControllerCommand;
 use Sheenazien8\Hascrudactions\Console\CreateHascruActionCommand;
 use Sheenazien8\Hascrudactions\Console\CreateLatableCommand;
@@ -145,15 +147,6 @@ class HascrudactionsServiceProvider extends ServiceProvider
         });
     }
 
-    /**
-     * Register the application services.
-     */
-    public function register()
-    {
-        $this->registerProviders();
-        // Automatically apply the package configuration
-        $this->mergeConfigFrom(__DIR__ . '/../config/config.php', 'hascrudactions');
-    }
 
     /**
      * Registers the package service providers.
@@ -169,5 +162,17 @@ class HascrudactionsServiceProvider extends ServiceProvider
         foreach ($this->providers as $provider) {
             $this->app->register($provider);
         }
+    }
+
+    /**
+     * Register the application services.
+     */
+    public function register()
+    {
+        $this->registerProviders();
+        // Automatically apply the package configuration
+        $this->mergeConfigFrom(__DIR__ . '/../config/config.php', 'hascrudactions');
+
+        View::share('table_id', str_replace('/', '-', Str::replaceFirst('/', '', $this->app->request->getRequestUri())) . '-table');
     }
 }
