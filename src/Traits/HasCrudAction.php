@@ -56,37 +56,7 @@ trait HasCrudAction
         }
 
         if ($request->ajax() || isset($this->return) && $this->return == 'api') {
-            if (isset($this->indexService)) {
-                if (count($this->indexService) > 2) {
-                    throw new ServiceActionsException('Index Service property is cant to more 2 index');
-                }
-                if (!is_array($this->indexService)) {
-                    throw new ServiceActionsException('Index Service property must be array');
-                }
-                $data = (new $this->indexService[0])->{$this->indexService[1]}($request);
-
-                if (isset($this->return) && $this->return == 'api') {
-                    return Response::success($data);
-                }
-
-                return $this->repository->getObjectModel()->table($data);
-            } else {
-                if (isset($this->return) && $this->return == 'index') {
-                    return;
-                }
-
-                if (isset($this->return) && $this->return == 'api') {
-                    if ($request->paging) {
-                        $data = $this->repository->paginate($request, ['*'], '')->toArray();
-                    } else {
-                        $data = $this->repository->get($request, ['*'], '')->toArray();
-                    }
-
-                    return Response::success($data);
-                }
-
-                return $this->repository->datatable($request);
-            }
+            return $this->repository->datatable($request);
         }
 
         $resources = except_last_word($request->route()->getName());
